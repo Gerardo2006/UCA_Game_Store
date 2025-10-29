@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import './carro.css'
 import logo from '../assets/logo.png'
@@ -44,8 +44,6 @@ function Carro() {
     if (carrito.length === 0) return
     
     alert(`Total a pagar: $${calcularTotal()}`)
-    // Aquí puedes navegar a una página de checkout
-    // navigate('/checkout', { state: { carrito, total: calcularTotal() } })
   }
 
   // Función para vaciar el carrito
@@ -61,13 +59,15 @@ function Carro() {
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
         </div>
-        <h1>UCA Games Store</h1>
-        <nav>
-          <a href="/">Inicio</a>
-          <a href="#buscar">Buscar</a>
-          <a href="#vender">Vender</a>
-          <a href="#reseñas">Reseñas</a>
-        </nav>
+        <div className="header-content">
+          <h1>UCA Games Store</h1>
+          <nav>
+            <Link to="/">Inicio</Link>
+            <Link to="#buscar">Buscar</Link>
+            <Link to="#vender">Vender</Link>
+            <Link to="#reseñas">Reseñas</Link>
+          </nav>
+        </div>
       </header>
 
       {notificacion.mostrar && (

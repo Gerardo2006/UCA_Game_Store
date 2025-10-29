@@ -2,6 +2,7 @@
 .Carro {
   margin: 0;
   min-height: 100vh;
+  padding: 0 100px;
   background-color: #0b0b0f;
   color: #ffffff;
   font-family: 'Helvetica Neue', sans-serif;
@@ -9,12 +10,9 @@
 
 /* Contenedor principal */
 .Carro-content {
-  padding-top: 140px;
-  padding-bottom: 100px;
   max-width: 1400px;
   margin: 0 auto;
-  padding-left: 200px;
-  padding-right: 200px;
+  padding: 140px 200px 100px;
 }
 
 /* Contenedor del carrito */
@@ -25,10 +23,10 @@
 }
 
 .carrito-contenedor h2 {
-  text-align: center;
   margin-bottom: 30px;
   font-size: 2rem;
   color: #ff7f11;
+  text-align: center;
 }
 
 /* Toast de notificación */
@@ -36,9 +34,9 @@
   position: fixed;
   top: 100px;
   right: 32px;
+  padding: 15px 25px;
   background-color: #ff7f11;
   color: #ffffff;
-  padding: 15px 25px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   font-size: 16px;
@@ -55,16 +53,16 @@
 
 /* Carrito vacío */
 .carrito-vacio {
-  text-align: center;
   padding: 60px 20px;
   background-color: #1c1c24;
-  border-radius: 12px;
   border: 1px solid #2a2a35;
+  border-radius: 12px;
+  text-align: center;
 }
 
 .carrito-vacio p {
-  font-size: 1.5rem;
   margin-bottom: 20px;
+  font-size: 1.5rem;
   color: #d1d1d6;
 }
 
@@ -74,8 +72,8 @@
   color: white;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 1rem;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
@@ -98,9 +96,9 @@
   gap: 20px;
   padding: 20px;
   background-color: #1c1c24;
+  border: 1px solid #2a2a35;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(255, 127, 17, 0.2);
-  border: 1px solid #2a2a35;
   transition: all 0.3s ease;
 }
 
@@ -112,8 +110,8 @@
 .carrito-item-imagen {
   width: 150px;
   height: 150px;
-  object-fit: cover;
   border-radius: 8px;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
@@ -129,16 +127,16 @@
 }
 
 .carrito-item-descripcion {
-  color: #d1d1d6;
   margin: 5px 0;
   font-size: 0.95rem;
+  color: #d1d1d6;
 }
 
 .carrito-item-precio {
+  margin: 10px 0 0 0;
   font-size: 1.5rem;
   font-weight: bold;
   color: #00bfa6;
-  margin: 10px 0 0 0;
 }
 
 .btn-eliminar {
@@ -147,8 +145,8 @@
   color: white;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 0.95rem;
+  cursor: pointer;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
@@ -160,11 +158,11 @@
 
 /* Resumen del carrito */
 .carrito-resumen {
-  background-color: #1c1c24;
   padding: 25px;
+  background-color: #1c1c24;
+  border: 1px solid #2a2a35;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(255, 127, 17, 0.2);
-  border: 1px solid #2a2a35;
 }
 
 .carrito-total {
@@ -172,8 +170,8 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 20px;
-  border-bottom: 2px solid #2a2a35;
   margin-bottom: 20px;
+  border-bottom: 2px solid #2a2a35;
 }
 
 .carrito-total h3 {
@@ -182,8 +180,8 @@
 }
 
 .precio-total {
-  color: #00bfa6 !important;
   font-size: 2rem;
+  color: #00bfa6 !important;
 }
 
 .carrito-acciones {
@@ -197,9 +195,9 @@
   padding: 12px 30px;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
@@ -224,28 +222,26 @@
   box-shadow: 0 4px 8px rgba(0, 191, 166, 0.3);
 }
 
-/* Header fijo estilo UCA Game Store - Layout horizontal */
+/* Header fijo estilo UCA Game Store */
 .Inicio-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   padding: 20px 40px;
   background: linear-gradient(90deg, #ff7f11 0%, #00bfa6 100%);
   color: #ffffff;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 6px rgba(255, 127, 17, 0.4);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 2px 6px rgba(255, 127, 17, 0.4);
-  border-radius: 0 0 12px 12px;
 }
 
 /* Logo */
 .Inicio-logo {
-  display: flex;
-  align-items: center;
+  margin-right: 20px;
+  flex-shrink: 0;
 }
 
 .Inicio-logo img {
@@ -254,11 +250,21 @@
   object-fit: contain;
 }
 
-/* Título centrado */
+/* Contenedor del título y navegación */
+.header-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
+  gap: 15px;
+}
+
+/* Título */
 .Inicio-header h1 {
-  font-size: 28px;
   margin: 0;
-  flex: 1;
+  font-size: 28px;
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -266,19 +272,26 @@
 /* Navegación */
 nav {
   display: flex;
-  gap: 16px;
+  gap: 10px;
+  justify-content: center;
 }
 
 nav a {
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  text-decoration: none;
-  font-size: 17.6px;
+  font-size: 15px;
   font-weight: 500;
-  transition: color 0.2s ease;
+  text-decoration: none;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
 nav a:hover {
-  color: #ffd580;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Footer */
@@ -286,14 +299,14 @@ nav a:hover {
   padding: 10px;
   background-color: #1c1c24;
   color: #00bfa6;
+  border-top: 1px solid #2a2a35;
+  font-size: 14.4px;
+  text-align: center;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  font-size: 14.4px;
-  border-top: 1px solid #2a2a35;
-  text-align: center;
 }
 
 /* Responsive */

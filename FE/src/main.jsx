@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './Inicio/home.jsx'
 import Display from './Display/juego.jsx'
-import Carrito from './carrito/carro.jsx'
+import Carrito from './Carrito/carro.jsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(

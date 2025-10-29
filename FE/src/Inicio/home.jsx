@@ -96,7 +96,7 @@ function Home() {
           <nav>
             <a href="#buscar">Buscar</a>
             <a href="#vender">Vender</a>
-            <a href="#carrito">Carrito</a>
+            <a href="/carrito">Carrito</a>
             <a href="#reseñas">Reseñas</a>
           </nav>
         </div>

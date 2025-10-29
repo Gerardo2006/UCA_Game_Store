@@ -1,12 +1,10 @@
+/* Contenedor principal */
 .Juego {
   margin: 0;
+  padding: 200px 500px 100px;
   background-color: #0b0b0f;
   color: #ffffff;
   font-family: 'Helvetica Neue', sans-serif;
-  padding-top: 200px;
-  padding-bottom: 100px;
-  padding-left: 500px;
-  padding-right: 500px;
   text-align: center;
 }
 
@@ -30,10 +28,10 @@
 .Juego-producto img {
   width: 100%;
   max-width: 400px;
-  border-radius: 12px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(0, 191, 166, 0.3);
+  border-radius: 12px;
   border: 1px solid #2a2a35;
+  box-shadow: 0 4px 12px rgba(0, 191, 166, 0.3);
 }
 
 .Juego-descripcion {
@@ -44,21 +42,21 @@
 
 .Juego-precio {
   font-size: 20px;
-  color: #00bfa6;
   font-weight: bold;
+  color: #00bfa6;
   margin-bottom: 32px;
 }
 
 /* Botones */
 .Juego button {
+  padding: 12px 24px;
+  margin: 8px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
   background-color: #ff7f11;
   color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
   cursor: pointer;
-  margin: 8px;
   transition: background-color 0.2s ease;
 }
 
@@ -83,14 +81,19 @@
   position: fixed;
   bottom: 120px;
   right: 32px;
+  padding: 12px 24px;
   background-color: #ff7f11;
   color: #ffffff;
-  padding: 12px 24px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   font-size: 16px;
   z-index: 2000;
   animation: fadeInOut 3s ease forwards;
+}
+
+.Juego-toast.toast-advertencia {
+  background-color: #ffc107;
+  color: #0b0b0f;
 }
 
 @keyframes fadeInOut {
@@ -102,12 +105,12 @@
 
 /* Error */
 .Juego-error {
-  color: #ff7f11;
-  font-size: 20px;
   padding: 100px;
+  font-size: 20px;
+  color: #ff7f11;
 }
 
-/* Header y footer (reutilizados) */
+/* Header */
 .Inicio-header {
   display: flex;
   align-items: center;
@@ -137,22 +140,23 @@
 }
 
 .Inicio-header h1 {
-  font-size: 28.8px;
-  margin: 0;
   flex: 1;
+  margin: 0;
+  font-size: 28.8px;
   text-align: center;
 }
 
+/* Navegación */
 nav {
   display: flex;
   gap: 16px;
 }
 
 nav a {
-  color: #ffffff;
-  text-decoration: none;
   font-size: 17.6px;
   font-weight: 500;
+  color: #ffffff;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
@@ -160,42 +164,16 @@ nav a:hover {
   color: #ffd580;
 }
 
+/* Footer */
 .Inicio-footer {
   padding: 10px;
   background-color: #1c1c24;
   color: #00bfa6;
+  border-top: 1px solid #2a2a35;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 1000;
   font-size: 14.4px;
-  border-top: 1px solid #2a2a35;
-}
-
-
-.Juego-toast {
-  position: fixed;
-  bottom: 120px;
-  right: 32px;
-  background-color: #ff7f11;
-  color: #ffffff;
-  padding: 12px 24px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  font-size: 16px;
-  z-index: 2000;
-  animation: fadeInOut 3s ease forwards;
-}
-
-.Juego-toast.toast-advertencia {
-  background-color: #ffc107;
-  color: #0b0b0f;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(20px); }
-  10% { opacity: 1; transform: translateY(0); }
-  90% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(20px); }
 }
