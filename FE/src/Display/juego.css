@@ -1,0 +1,153 @@
+.Vista {
+  margin: 0;
+  background-color: #0b0b0f;
+  color: #ffffff;
+  font-family: 'Helvetica Neue', sans-serif;
+  padding-top: 200px;
+  padding-bottom: 100px;
+  padding-left: 300px;
+  padding-right: 300px;
+  text-align: center;
+}
+
+/* Sección del producto */
+.Vista-producto {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px;
+  background-color: #1c1c24;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(255, 127, 17, 0.2);
+  border: 1px solid #2a2a35;
+}
+
+.Vista-producto h2 {
+  font-size: 32px;
+  color: #ff7f11;
+  margin-bottom: 24px;
+}
+
+.Vista-producto img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 12px rgba(0, 191, 166, 0.3);
+  border: 1px solid #2a2a35;
+}
+
+.Vista-descripcion {
+  font-size: 16px;
+  color: #d1d1d6;
+  margin-bottom: 16px;
+}
+
+.Vista-precio {
+  font-size: 20px;
+  color: #00bfa6;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+/* Botones */
+.Vista button {
+  background-color: #ff7f11;
+  color: #ffffff;
+  border: none;
+  padding-left: 100px;
+  padding-right: 100px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.Vista button:hover {
+  background-color: #ffd580;
+  color: #0b0b0f;
+}
+
+.Vista-volver {
+  background-color: transparent;
+  border: 1px solid #00bfa6;
+  color: #00bfa6;
+}
+
+.Vista-volver:hover {
+  background-color: #00bfa6;
+  color: #0b0b0f;
+}
+
+/* Error */
+.Vista-error {
+  color: #ff7f11;
+  font-size: 20px;
+  padding: 100px;
+}
+
+/* Header y footer (reutilizados) */
+.Inicio-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 20px 40px;
+  background: linear-gradient(90deg, #ff7f11 0%, #00bfa6 100%);
+  color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(255, 127, 17, 0.4);
+  border-radius: 0 0 12px 12px;
+}
+
+.Inicio-logo {
+  display: flex;
+  align-items: center;
+}
+
+.Inicio-logo img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.Inicio-header h1 {
+  font-size: 28.8px;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  gap: 16px;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 17.6px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: #ffd580;
+}
+
+.Inicio-footer {
+  padding: 10px;
+  background-color: #1c1c24;
+  color: #00bfa6;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  font-size: 14.4px;
+  border-top: 1px solid #2a2a35;
+}
