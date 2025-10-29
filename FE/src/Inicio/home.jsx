@@ -17,11 +17,11 @@ function Home() {
     },
     {
       id: 2,
-      nombre: 'EA Sports FC 25',
+      nombre: 'Detroit: Become Human',
       descripcion:
-        'La última entrega de fútbol con gráficos realistas y modos de juego variados.',
-      imagen: 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2669320/86a267ec44fc57124127eba46f25120813374317/capsule_616x353.jpg?t=1752681627',
-      precio: 69.99
+        'Un juego de aventura interactivo que explora la vida de androides en un futuro cercano.',
+      imagen: 'https://tse2.mm.bing.net/th/id/OIP.oDrIZz93myhtzMyD2-dSSQHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3',
+      precio: 39.99
     },
     {
       id: 3,
@@ -53,20 +53,36 @@ function Home() {
       descripcion:
         'Un juego de acción y aventura en 2D con un hermoso estilo artístico y una jugabilidad desafiante.',
       imagen: 'https://i.ytimg.com/vi/JuP47fRBsWg/maxresdefault.jpg',
-      precio: 19.99
+      precio: 4.99
     },
     {
       id: 7,
       nombre: 'Hollow Knight: Silksong',
       descripcion:
         'Una secuela muy esperada del aclamado juego de acción y aventura en 2D.',
-      imagen: 'https://upload.wikimedia.org/wikipedia/en/5/5d/Hollow_Knight_Silksong_first_cover_art.jpg',
-      precio: 29.99
+      imagen: 'https://psverso.com.br/wp-content/uploads/2025/09/Hollow-Knight-Silksong.webp',
+      precio: 6.99
+    },
+    {
+      id: 8,
+      nombre: 'Cyberpunk 2077',
+      descripcion:
+        'Un RPG de mundo abierto en un futuro distópico con una narrativa profunda y opciones de personalización.',
+      imagen: 'https://th.bing.com/th/id/R.205e40bba03a5f5b8a6034fe49958ffc?rik=DcvgaFOKIM9IaA&pid=ImgRaw&r=0',
+      precio: 49.99
+    },
+    {
+      id: 9,
+      nombre: 'The legend of Zelda: Tears of the Kingdom',
+      descripcion:
+        'Un juego de acción y aventura en un mundo abierto lleno de exploración y desafíos.',
+      imagen: 'https://tse1.mm.bing.net/th/id/OIP.xJqlZQdmVMRG7Md9zRWLwwHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3',
+      precio: 59.99
     }
   ])
 
   const irAVista = producto => {
-    navigate(`/compra/${producto.id}`, { state: producto })
+    navigate(`/juego/${producto.id}`, { state: producto })
   }
 
   return (
@@ -75,13 +91,15 @@ function Home() {
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
         </div>
-        <h1>UCA Games Store</h1>
-        <nav>
-          <a href="#buscar">Buscar</a>
-          <a href="#vender">Vender</a>
-          <a href="#comprar">Comprar</a>
-          <a href="#reseñas">Reseñas</a>
-        </nav>
+        <div className="header-content">
+          <h1>UCA Games Store</h1>
+          <nav>
+            <a href="#buscar">Buscar</a>
+            <a href="#vender">Vender</a>
+            <a href="#carrito">Carrito</a>
+            <a href="#reseñas">Reseñas</a>
+          </nav>
+        </div>
       </header>
 
       <div className="Inicio-content">
@@ -112,7 +130,7 @@ function Home() {
       </div>
 
       <footer className="Inicio-footer">
-        <p>© 2025 Mi Tienda React</p>
+        <p>© 2025 UCA Game Store</p>
       </footer>
     </main>
   )

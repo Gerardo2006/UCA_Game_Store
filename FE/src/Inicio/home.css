@@ -4,12 +4,11 @@
   background-color: #0b0b0f;
   color: #ffffff;
   font-family: 'Helvetica Neue', sans-serif;
-  text-align: center;
 }
 
 /* Contenedor principal */
 .Inicio-content {
-  padding-top: 200px;
+  padding-top: 140px;
   padding-bottom: 100px;
   max-width: 1400px;
   margin: 0 auto;
@@ -21,8 +20,6 @@
 .Inicio-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
   padding: 20px 40px;
   background: linear-gradient(90deg, #ff7f11 0%, #00bfa6 100%);
   color: #ffffff;
@@ -37,40 +34,58 @@
 
 /* Logo */
 .Inicio-logo {
-  display: flex;
-  align-items: center;
+  flex-shrink: 0;
+  margin-right: 20px;
 }
 
 .Inicio-logo img {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   object-fit: contain;
+}
+
+/* Contenedor del título y navegación */
+.header-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
+  gap: 15px; /* Añade esta línea */
 }
 
 /* Título */
 .Inicio-header h1 {
-  font-size: 28.8px;
-  margin: 0;
-  flex: 1;
+  font-size: 28px;
+  margin: 0; /* Cambia esto - elimina el margen inferior */
   text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Navegación */
 nav {
   display: flex;
-  gap: 16px;
+  gap: 10px;
+  justify-content: center;
 }
 
 nav a {
   color: #ffffff;
   text-decoration: none;
-  font-size: 17.6px;
+  font-size: 15px;
   font-weight: 500;
-  transition: color 0.2s ease;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
 }
 
 nav a:hover {
-  color: #ffd580;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Footer */

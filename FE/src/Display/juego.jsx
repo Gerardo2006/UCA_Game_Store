@@ -1,15 +1,22 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import './juego.css'
 import logo from '../assets/logo.png'
 
-function Vista() {
+function Juego() {
   const { state: producto } = useLocation()
   const navigate = useNavigate()
+  const [notificacion, setNotificacion] = useState(false)
 
-  if (!producto) return <p className="Vista-error">No se encontró el producto.</p>
+  if (!producto) return <p className="Juego-error">No se encontró el producto.</p>
+
+  const agregarAlCarrito = () => {
+    setNotificacion(true)
+    setTimeout(() => setNotificacion(false), 3000)
+  }
 
   return (
-    <main className="Vista">
+    <main className="Juego">
       <header className="Inicio-header">
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
@@ -23,20 +30,24 @@ function Vista() {
         </nav>
       </header>
 
-      <section className="Vista-producto">
+      <section className="Juego-producto">
         <h2>{producto.nombre}</h2>
         <img src={producto.imagen} alt={producto.nombre} />
-        <p className="Vista-descripcion">{producto.descripcion}</p>
-        <p className="Vista-precio">${producto.precio.toFixed(2)}</p>
-        <button onClick={() => alert('¡Compra confirmada!')}>Confirmar compra</button>
-        <button className="Vista-volver" onClick={() => navigate('/')}>Volver al inicio</button>
+        <p className="Juego-descripcion">{producto.descripcion}</p>
+        <p className="Juego-precio">${producto.precio.toFixed(2)}</p>
+        <button onClick={agregarAlCarrito}>Agregar al carrito</button>
+        <button className="Juego-volver" onClick={() => navigate('/')}>Volver al inicio</button>
       </section>
 
+      {notificacion && (
+        <div className="Juego-toast">¡Producto agregado al carrito!</div>
+      )}
+
       <footer className="Inicio-footer">
-        <p>© 2025 Mi Tienda React</p>
+        <p>© 2025 UCA Game Store</p>
       </footer>
     </main>
   )
 }
 
-export default Vista
+export default Juego
