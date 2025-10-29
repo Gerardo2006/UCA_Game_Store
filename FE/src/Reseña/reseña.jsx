@@ -28,9 +28,8 @@ function Reseña() {
           <nav>
             <Link to="/">Inicio</Link>
             <Link to="#buscar">Buscar</Link>
-            <Link to="/venta">Vender</Link>
-            <Link to="/carro">Carrito</Link>
-            <Link to="/reseña">Reseñas</Link>
+            <Link to="/vender">Vender</Link>
+            <Link to="/carrito">Carrito</Link>
           </nav>
         </div>
       </header>

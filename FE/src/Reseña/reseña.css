@@ -1,17 +1,112 @@
+
 .contenedor-reseña {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: #0b0b0f;
+    color: #ffffff;
+    font-family: 'Helvetica Neue', sans-serif;
 }
+
+
+.Inicio-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    background: linear-gradient(90deg, #ff7f11 0%, #00bfa6 100%);
+    color: #ffffff;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 2px 6px rgba(255, 127, 17, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.Inicio-logo {
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.Inicio-logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.header-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    gap: 15px;
+}
+
+.Inicio-header h1 {
+    margin: 0;
+    font-size: 28px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+nav a {
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+.Inicio-footer {
+    padding: 10px;
+    background-color: #1c1c24;
+    color: #00bfa6;
+    border-top: 1px solid #2a2a35;
+    font-size: 14.4px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
 
 .reseña-principal {
     flex: 1;
     max-width: 800px;
-    margin: 2rem auto;
+    margin: 140px auto 100px;
     padding: 2rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #1c1c24;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 127, 17, 0.2);
+    border: 1px solid #2a2a35;
+}
+
+.reseña-principal h2 {
+    color: #ff7f11;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
 .formulario-reseña {
@@ -44,15 +139,23 @@
 
 .grupo-formulario label {
     font-weight: bold;
-    color: #333;
+    color: #ff7f11;
 }
 
 .grupo-formulario input,
 .grupo-formulario textarea {
     padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid #2a2a35;
+    background-color: #0b0b0f;
+    color: #ffffff;
+    border-radius: 8px;
     font-size: 1rem;
+}
+
+.grupo-formulario input:focus,
+.grupo-formulario textarea:focus {
+    outline: none;
+    border-color: #ff7f11;
 }
 
 .grupo-formulario textarea {
@@ -61,24 +164,36 @@
 }
 
 .boton-enviar {
-    background-color: #007bff;
+    background-color: #00bfa6;
     color: white;
     padding: 1rem;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
 }
 
 .boton-enviar:hover {
-    background-color: #0056b3;
+    background-color: #00a890;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 191, 166, 0.3);
 }
 
-/* Diseño responsivo */
+
 @media (max-width: 768px) {
     .reseña-principal {
-        margin: 1rem;
+        margin: 120px 1rem 80px;
         padding: 1rem;
+    }
+    
+    .Inicio-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    nav {
+        flex-wrap: wrap;
     }
 }

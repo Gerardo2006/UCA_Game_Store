@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, Link } from 'react-router-dom'
 import { useState } from 'react'
 import './juego.css'
 import logo from '../assets/logo.png'
@@ -13,15 +13,15 @@ function Juego() {
   const agregarAlCarrito = () => {
     // Obtener el carrito actual de localStorage
     const carritoActual = JSON.parse(localStorage.getItem('carrito') || '[]')
-    
+
     // Verificar si el juego ya está en el carrito
     const juegoExiste = carritoActual.find(item => item.id === producto.id)
-    
+
     if (!juegoExiste) {
       // Agregar el nuevo juego
       const nuevoCarrito = [...carritoActual, producto]
       localStorage.setItem('carrito', JSON.stringify(nuevoCarrito))
-      
+
       setNotificacion({ mostrar: true, mensaje: '¡Producto agregado al carrito!', tipo: 'exito' })
       setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
     } else {
@@ -39,10 +39,11 @@ function Juego() {
         <div className="header-content">
           <h1>UCA Games Store</h1>
           <nav>
-            <a href="/">Inicio</a>
-            <a href="#buscar">Buscar</a>
-            <a href="/carrito">Carrito</a>
-            <a href="/reseñas">Reseñas</a>
+            <Link to="/">Inicio</Link>
+            <Link to="#buscar">Buscar</Link>
+            <Link to="/vender">Vender</Link>
+            <Link to="/carrito">Carrito</Link>
+            <Link to="/reseñas">Reseñas</Link>
           </nav>
         </div>
       </header>

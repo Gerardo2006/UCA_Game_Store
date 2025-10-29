@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import './venta.css'
 import logo from '../assets/logo.png'
 
@@ -92,10 +92,10 @@ function Venta() {
         <div className="header-content">
           <h1>UCA Games Store</h1>
           <nav>
-            <a href="/">Inicio</a>
-            <a href="#buscar">Buscar</a>
-            <a href="/carrito">Carrito</a>
-            <a href="/reseñas" >Reseñas</a>
+            <Link to="/">Inicio</Link>
+            <Link to="#buscar">Buscar</Link>
+            <Link to="/carrito">Carrito</Link>
+            <Link to="/reseñas">Reseñas</Link>
           </nav>
         </div>
       </header>

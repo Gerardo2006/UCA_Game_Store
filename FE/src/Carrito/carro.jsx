@@ -29,7 +29,7 @@ function Carro() {
   const eliminarDelCarrito = (id) => {
     const nuevoCarrito = carrito.filter(juego => juego.id !== id)
     setCarrito(nuevoCarrito)
-    
+
     setNotificacion({ mostrar: true, mensaje: '¡Juego eliminado del carrito!' })
     setTimeout(() => setNotificacion({ mostrar: false, mensaje: '' }), 2000)
   }
@@ -42,7 +42,7 @@ function Carro() {
   // Función para proceder al pago
   const procederAlPago = () => {
     if (carrito.length === 0) return
-    
+
     alert(`Total a pagar: $${calcularTotal()}`)
   }
 
@@ -90,9 +90,9 @@ function Carro() {
               <div className="carrito-items">
                 {carrito.map((juego) => (
                   <div key={juego.id} className="carrito-item">
-                    <img 
-                      src={juego.imagen} 
-                      alt={juego.nombre} 
+                    <img
+                      src={juego.imagen}
+                      alt={juego.nombre}
                       className="carrito-item-imagen"
                     />
                     <div className="carrito-item-info">
@@ -100,7 +100,7 @@ function Carro() {
                       <p className="carrito-item-descripcion">{juego.descripcion}</p>
                       <p className="carrito-item-precio">${juego.precio.toFixed(2)}</p>
                     </div>
-                    <button 
+                    <button
                       onClick={() => eliminarDelCarrito(juego.id)}
                       className="btn-eliminar"
                     >
@@ -115,7 +115,7 @@ function Carro() {
                   <h3>Total:</h3>
                   <h3 className="precio-total">${calcularTotal()}</h3>
                 </div>
-                
+
                 <div className="carrito-acciones">
                   <button onClick={vaciarCarrito} className="btn-vaciar">
                     Vaciar Carrito
