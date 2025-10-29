@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from './Inicio/home.jsx'
-import Display from './Display/juego.jsx'
-import Carrito from './Carrito/carro.jsx'
-import Vender from './Vender/venta.jsx'
+import Home from './Inicio/home'
+import Juego from './Display/juego'
+import Carro from './Carrito/carro'
+import Reseña from './Reseña/reseña'
+import Venta from './Vender/venta'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -12,10 +13,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/juego/:id" element={<Display />} />
-        <Route path="/carrito" element={<Carrito />} />
-        <Route path="/vender" element={<Vender />} />
+        <Route path="/juego" element={<Juego />} />
+        <Route path="/carro" element={<Carro />} />
+        <Route path="/reseña" element={<Reseña />} />
+        <Route path="/venta" element={<Venta />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 )

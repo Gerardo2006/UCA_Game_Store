@@ -64,8 +64,8 @@ function Carro() {
           <nav>
             <Link to="/">Inicio</Link>
             <Link to="#buscar">Buscar</Link>
-            <Link to="#vender">Vender</Link>
-            <Link to="#reseñas">Reseñas</Link>
+            <Link to="/vender">Vender</Link>
+            <Link to="/reseñas">Reseñas</Link>
           </nav>
         </div>
       </header>

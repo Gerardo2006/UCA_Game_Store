@@ -95,7 +95,7 @@ function Venta() {
             <a href="/">Inicio</a>
             <a href="#buscar">Buscar</a>
             <a href="/carrito">Carrito</a>
-            <a href="#reseñas" >Reseñas</a>
+            <a href="/reseñas" >Reseñas</a>
           </nav>
         </div>
       </header>
