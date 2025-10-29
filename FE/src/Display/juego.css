@@ -172,3 +172,30 @@ nav a:hover {
   font-size: 14.4px;
   border-top: 1px solid #2a2a35;
 }
+
+
+.Juego-toast {
+  position: fixed;
+  bottom: 120px;
+  right: 32px;
+  background-color: #ff7f11;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  z-index: 2000;
+  animation: fadeInOut 3s ease forwards;
+}
+
+.Juego-toast.toast-advertencia {
+  background-color: #ffc107;
+  color: #0b0b0f;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}

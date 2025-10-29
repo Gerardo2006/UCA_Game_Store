@@ -6,13 +6,28 @@ import logo from '../assets/logo.png'
 function Juego() {
   const { state: producto } = useLocation()
   const navigate = useNavigate()
-  const [notificacion, setNotificacion] = useState(false)
+  const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
 
   if (!producto) return <p className="Juego-error">No se encontró el producto.</p>
 
   const agregarAlCarrito = () => {
-    setNotificacion(true)
-    setTimeout(() => setNotificacion(false), 3000)
+    // Obtener el carrito actual de localStorage
+    const carritoActual = JSON.parse(localStorage.getItem('carrito') || '[]')
+    
+    // Verificar si el juego ya está en el carrito
+    const juegoExiste = carritoActual.find(item => item.id === producto.id)
+    
+    if (!juegoExiste) {
+      // Agregar el nuevo juego
+      const nuevoCarrito = [...carritoActual, producto]
+      localStorage.setItem('carrito', JSON.stringify(nuevoCarrito))
+      
+      setNotificacion({ mostrar: true, mensaje: '¡Producto agregado al carrito!', tipo: 'exito' })
+      setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
+    } else {
+      setNotificacion({ mostrar: true, mensaje: 'Este juego ya está en tu carrito', tipo: 'advertencia' })
+      setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
+    }
   }
 
   return (
@@ -21,13 +36,15 @@ function Juego() {
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
         </div>
-        <h1>UCA Games Store</h1>
-        <nav>
-          <a href="#buscar">Buscar</a>
-          <a href="#vender">Vender</a>
-          <a href="#comprar">Comprar</a>
-          <a href="#reseñas">Reseñas</a>
-        </nav>
+        <div className="header-content">
+          <h1>UCA Games Store</h1>
+          <nav>
+            <a href="/">Inicio</a>
+            <a href="#buscar">Buscar</a>
+            <a href="/carrito">Carrito</a>
+            <a href="#reseñas">Reseñas</a>
+          </nav>
+        </div>
       </header>
 
       <section className="Juego-producto">
@@ -39,8 +56,10 @@ function Juego() {
         <button className="Juego-volver" onClick={() => navigate('/')}>Volver al inicio</button>
       </section>
 
-      {notificacion && (
-        <div className="Juego-toast">¡Producto agregado al carrito!</div>
+      {notificacion.mostrar && (
+        <div className={`Juego-toast ${notificacion.tipo === 'advertencia' ? 'toast-advertencia' : ''}`}>
+          {notificacion.mensaje}
+        </div>
       )}
 
       <footer className="Inicio-footer">
