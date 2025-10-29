@@ -95,7 +95,7 @@ function Home() {
           <h1>UCA Games Store</h1>
           <nav>
             <a href="#buscar">Buscar</a>
-            <a href="#vender">Vender</a>
+            <a href="/vender">Vender</a>
             <a href="/carrito">Carrito</a>
             <a href="#reseñas">Reseñas</a>
           </nav>
