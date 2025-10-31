@@ -349,3 +349,69 @@ nav a:hover {
     justify-content: center;
   }
 }
+/* Toast de notificación */
+.Carro-toast {
+  position: fixed;
+  top: 100px;
+  right: 32px;
+  background-color: #ff7f11;
+  color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  font-weight: 500;
+  z-index: 2000;
+  animation: slideIn 0.3s ease-out;
+  min-width: 300px;
+  text-align: center;
+}
+
+/* Notificación de éxito (verde) */
+.Carro-toast.toast-exito {
+  background: linear-gradient(135deg, #00bfa6 0%, #00a890 100%);
+  box-shadow: 0 4px 12px rgba(0, 191, 166, 0.4);
+  animation: slideInBounce 0.5s ease-out;
+}
+
+/* Notificación de info (naranja) */
+.Carro-toast.toast-info {
+  background: linear-gradient(135deg, #ff7f11 0%, #ff9f40 100%);
+  box-shadow: 0 4px 12px rgba(255, 127, 17, 0.4);
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(-10px) scale(1.05);
+  }
+  80% {
+    transform: translateX(5px) scale(0.98);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(-20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}

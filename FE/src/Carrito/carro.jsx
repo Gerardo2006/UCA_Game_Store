@@ -1,4 +1,4 @@
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import './carro.css'
 import logo from '../assets/logo.png'
@@ -6,7 +6,7 @@ import logo from '../assets/logo.png'
 function Carro() {
   const navigate = useNavigate()
   const [carrito, setCarrito] = useState([])
-  const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '' })
+  const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
 
   // Cargar el carrito desde localStorage al montar el componente
   useEffect(() => {
@@ -29,9 +29,9 @@ function Carro() {
   const eliminarDelCarrito = (id) => {
     const nuevoCarrito = carrito.filter(juego => juego.id !== id)
     setCarrito(nuevoCarrito)
-
-    setNotificacion({ mostrar: true, mensaje: '¡Juego eliminado del carrito!' })
-    setTimeout(() => setNotificacion({ mostrar: false, mensaje: '' }), 2000)
+    
+    setNotificacion({ mostrar: true, mensaje: '¡Juego eliminado del carrito!', tipo: 'info' })
+    setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 2000)
   }
 
   // Función para calcular el total
@@ -42,15 +42,26 @@ function Carro() {
   // Función para proceder al pago
   const procederAlPago = () => {
     if (carrito.length === 0) return
-
-    alert(`Total a pagar: $${calcularTotal()}`)
+    
+    const total = calcularTotal()
+    setNotificacion({ 
+      mostrar: true, 
+      mensaje: `¡Compra exitosa! Total a pagar: $${total}`, 
+      tipo: 'exito' 
+    })
+    
+    // Vaciar el carrito después de la compra
+    setTimeout(() => {
+      setCarrito([])
+      setNotificacion({ mostrar: false, mensaje: '', tipo: '' })
+    }, 3000)
   }
 
   // Función para vaciar el carrito
   const vaciarCarrito = () => {
     setCarrito([])
-    setNotificacion({ mostrar: true, mensaje: 'Carrito vaciado' })
-    setTimeout(() => setNotificacion({ mostrar: false, mensaje: '' }), 2000)
+    setNotificacion({ mostrar: true, mensaje: 'Carrito vaciado', tipo: 'info' })
+    setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 2000)
   }
 
   return (
@@ -59,19 +70,17 @@ function Carro() {
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
         </div>
-        <div className="header-content">
-          <h1>UCA Games Store</h1>
-          <nav>
-            <Link to="/">Inicio</Link>
-            <Link to="#buscar">Buscar</Link>
-            <Link to="/vender">Vender</Link>
-            <Link to="/reseñas">Reseñas</Link>
-          </nav>
-        </div>
+        <h1>UCA Games Store</h1>
+        <nav>
+          <a href="/">Inicio</a>
+          <a href="#buscar">Buscar</a>
+          <a href="#vender">Vender</a>
+          <a href="#reseñas">Reseñas</a>
+        </nav>
       </header>
 
       {notificacion.mostrar && (
-        <div className="Carro-toast">
+        <div className={`Carro-toast ${notificacion.tipo === 'exito' ? 'toast-exito' : ''} ${notificacion.tipo === 'info' ? 'toast-info' : ''}`}>
           {notificacion.mensaje}
         </div>
       )}
@@ -90,9 +99,9 @@ function Carro() {
               <div className="carrito-items">
                 {carrito.map((juego) => (
                   <div key={juego.id} className="carrito-item">
-                    <img
-                      src={juego.imagen}
-                      alt={juego.nombre}
+                    <img 
+                      src={juego.imagen} 
+                      alt={juego.nombre} 
                       className="carrito-item-imagen"
                     />
                     <div className="carrito-item-info">
@@ -100,7 +109,7 @@ function Carro() {
                       <p className="carrito-item-descripcion">{juego.descripcion}</p>
                       <p className="carrito-item-precio">${juego.precio.toFixed(2)}</p>
                     </div>
-                    <button
+                    <button 
                       onClick={() => eliminarDelCarrito(juego.id)}
                       className="btn-eliminar"
                     >
@@ -115,7 +124,7 @@ function Carro() {
                   <h3>Total:</h3>
                   <h3 className="precio-total">${calcularTotal()}</h3>
                 </div>
-
+                
                 <div className="carrito-acciones">
                   <button onClick={vaciarCarrito} className="btn-vaciar">
                     Vaciar Carrito
