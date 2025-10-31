@@ -102,7 +102,7 @@ function Venta() {
           <h1>UCA Games Store</h1>
           <nav>
             <Link to="/">Inicio</Link>
-            <Link to="#buscar">Buscar</Link>
+            <Link to="/buscar">Buscar</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
           </nav>

@@ -5,6 +5,7 @@
   color: #ffffff;
   font-family: 'Helvetica Neue', sans-serif;
   width: 100%;
+  min-height: 100vh;
 }
 
 /* Contenedor principal */
