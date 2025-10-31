@@ -1,111 +1,237 @@
+/* Contenedor principal de la página Venta */
 .Venta {
-  font-family: Arial, sans-serif;
+  font-family: 'Helvetica Neue', sans-serif;
   background-color: #0b0b0f;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 200px 500px 100px;
+  padding: 140px 200px 100px;
+  box-sizing: border-box;
 }
 
 .Inicio-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px 50px;
-  background-color: #1a1a1a;
-  color: white;
+  padding: 20px 40px;
+  background: linear-gradient(90deg, #ff7f11 0%, #00bfa6 100%);
+  color: #ffffff;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 6px rgba(255, 127, 17, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
-.Inicio-logo img { height: 50px; }
+.Inicio-logo {
+  margin-right: 20px;
+  flex-shrink: 0;
+}
 
-.header-content h1 { margin: 0; }
+.Inicio-logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
 
-.header-content nav a {
-  margin-left: 20px;
-  color: white;
+.header-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
+  gap: 15px;
+}
+
+.Inicio-header h1 {
+  margin: 0;
+  font-size: 28px;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+nav a {
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
   text-decoration: none;
+  border-radius: 20px;
+  transition: all 0.3s ease;
 }
 
-.header-content nav a.activo {
+nav a:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Clase para el enlace activo (opcional, por si la usas en venta.jsx) */
+nav a.activo {
+  background: rgba(255, 255, 255, 0.3);
   font-weight: bold;
-  text-decoration: underline;
 }
 
-/* Contenedor centrado */
 .Venta-contenido {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  align-items: flex-start;
+  padding: 20px 0;
   flex: 1;
 }
 
-/* Contenedor de los cuadros */
+/* Contenedor del formulario (la "tarjeta") */
 .Juego-cuadros {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
-  max-width: 500px;
-  background-color:#2a2a35;
+  max-width: 700px;
+  background-color: #1c1c24;
+  border: 1px solid #2a2a35;
+  box-shadow: 0 4px 12px rgba(255, 127, 17, 0.2);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Cada cuadro */
-.Juego-cuadro { display: flex; flex-direction: column; text-align: left; }
-.Juego-cuadro h3 { margin-bottom: 8px; color: #ffffff; }
+/* Título principal del formulario */
+.Juego-cuadros h2 {
+  color: #ff7f11;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+/* Cada grupo de input/label */
+.Juego-cuadro {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+/* Título/Label de cada campo */
+.Juego-cuadro h3 {
+  margin-bottom: 8px;
+  color: #ff7f11;
+}
+
+/* Inputs y Textareas */
 .Juego-cuadro input,
 .Juego-cuadro textarea {
-  padding: 10px;
+  padding: 12px;
   font-size: 16px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #2a2a35;
+  background-color: #0b0b0f;
+  color: #ffffff;
   width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  font-family: 'Helvetica Neue', sans-serif;
 }
-.Juego-cuadro textarea { resize: vertical; min-height: 80px; }
 
-.contador { font-size: 12px; color: #666; margin-top: 4px; }
+/* Estilo al seleccionar el input */
+.Juego-cuadro input:focus,
+.Juego-cuadro textarea:focus {
+  outline: none;
+  border-color: #ff7f11;
+}
 
-/* Botones */
+.Juego-cuadro textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Contador de caracteres */
+.contador {
+  font-size: 12px;
+  color: #d1d1d6;
+  margin-top: 6px;
+  text-align: right;
+}
+
 .Juego-botones {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-top: 20px;
 }
-.Juego-botones button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-.Juego-publicar { background-color: #28a745; color: white; }
-.Juego-publicar:hover { background-color: #218838; }
-.Juego-volver { background-color: #007bff; color: white; }
-.Juego-volver:hover { background-color: #0056b3; }
 
-/* Notificaciones */
+.Juego-botones button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.Juego-publicar {
+  background-color: #00bfa6;
+  color: white;
+}
+
+.Juego-publicar:hover {
+  background-color: #00a890;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 191, 166, 0.3);
+}
+
+.Juego-volver {
+  background-color: transparent;
+  color: #00bfa6;
+  border: 1px solid #00bfa6;
+}
+
+.Juego-volver:hover {
+  background-color: #00bfa6;
+  color: #0b0b0f;
+}
+
+/* Notificaciones (Toast) */
 .Juego-toast {
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 120px;
+  right: 32px;
   padding: 15px 25px;
   border-radius: 8px;
   font-weight: bold;
+  z-index: 2000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-.toast-advertencia { background-color: #ffc107; color: #333; }
-.toast-exito { background-color: #28a745; color: white; }
+
+.toast-advertencia {
+  background-color: #ffc107;
+  color: #0b0b0f;
+}
+
+.toast-exito {
+  background: linear-gradient(135deg, #00bfa6 0%, #00a890 100%);
+  color: white;
+}
 
 /* Footer */
 .Inicio-footer {
-  background-color: #1a1a1a;
-  color: white;
+  padding: 10px;
+  background-color: #1c1c24;
+  color: #00bfa6;
+  border-top: 1px solid #2a2a35;
+  font-size: 14.4px;
   text-align: center;
-  padding: 15px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }

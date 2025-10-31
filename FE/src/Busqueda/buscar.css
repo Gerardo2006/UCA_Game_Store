@@ -1,0 +1,71 @@
+/* Contenedor principal de la página de búsqueda */
+.Buscar-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 140px 200px 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 200px;
+    min-height: calc(100vh - 140px - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Contenedor de la barra de búsqueda */
+.buscador-container {
+    width: 100%;
+    margin-bottom: 40px;
+    text-align: center;
+    margin-top: 125px; /* Added this line to create space above the button */
+    display: inline-block;
+}
+
+.buscador-container h2 {
+    font-size: 2rem;
+    color: #ff7f11;
+    margin-bottom: 20px;
+}
+
+/* La barra de búsqueda (input) */
+.buscador-input {
+    width: 80%;
+    max-width: 700px;
+    padding: 15px 25px;
+    font-size: 1.1rem;
+    color: #ffffff;
+    background-color: #1c1c24;
+    border: 1px solid #2a2a35;
+    border-radius: 50px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.buscador-input:focus {
+    border-color: #ff7f11;
+    box-shadow: 0 0 15px rgba(255, 127, 17, 0.3);
+}
+
+/* Mensaje de "No hay resultados" */
+.no-resultados {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #d1d1d6;
+    padding: 40px 0;
+}
+
+/* Resaltar el enlace "Buscar" en el header */
+.Inicio-header nav a.activo {
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Estilo para el precio del producto */
+.producto-precio {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #00bfa6;
+    margin-top: 10px;
+}

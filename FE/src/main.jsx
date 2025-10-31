@@ -6,6 +6,7 @@ import Juego from './Display/juego'
 import Carro from './Carrito/carro'
 import Reseña from './Reseña/reseña'
 import Venta from './Vender/venta'
+import Buscar from './Busqueda/buscar'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/carrito" element={<Carro />} />
         <Route path="/reseñas" element={<Reseña />} />
         <Route path="/vender" element={<Venta />} />
+        <Route path="/buscar" element={<Buscar />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
