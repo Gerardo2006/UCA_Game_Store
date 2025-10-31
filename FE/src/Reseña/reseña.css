@@ -80,10 +80,8 @@ nav a:hover {
 /* Contenido principal */
 .reseña-contenido {
     flex: 1;
-    max-width: 1400px;
     margin: 0 auto;
     padding: 140px 200px 100px;
-    width: 100%;
 }
 
 /* Título de selección */
@@ -181,6 +179,8 @@ nav a:hover {
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
+    margin-top: 15px; 
+    display: inline-block;
 }
 
 .btn-volver-lista:hover {
@@ -394,7 +394,7 @@ nav a:hover {
     margin: 0;
 }
 
-/* Responsive */
+
 @media (max-width: 1200px) {
     .contenedor-formulario-reseñas {
         grid-template-columns: 1fr;
@@ -465,4 +465,40 @@ nav a:hover {
 .promedio-texto {
     color: #d1d1d6;
     font-size: 0.9rem;
+}
+
+.Reseña-toast {
+    position: fixed;
+    top: 100px;
+    right: 32px;
+    padding: 15px 25px;
+    background-color: #ff7f11;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 2000;
+    animation: fadeInOut 3s ease forwards;
+    max-width: 400px;
+}
+
+.Reseña-toast.toast-error {
+    background-color: #dc3545;
+}
+
+.Reseña-toast.toast-exito {
+    background-color: #28a745;
+}
+
+.Reseña-toast.toast-advertencia {
+    background-color: #ffc107;
+    color: #0b0b0f;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
 }

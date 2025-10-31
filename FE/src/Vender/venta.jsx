@@ -19,7 +19,6 @@ function Venta() {
 
   const manejarPublicacion = () => {
     const valorNumerico = parseFloat(precio.replace('$', '')) || 0
-    const valorCarnet = carnet.replace('#', '')
 
     if (!nombre || !descripcion || !precio || !carnet) {
       mostrarNotificacion('Completa todos los campos antes de publicar.', 'advertencia')
@@ -36,8 +35,13 @@ function Venta() {
       return
     }
 
-    if (!/^\d{8}$/.test(valorCarnet) || valorCarnet === '00000000') {
-      mostrarNotificacion('El carnet debe tener 8 dígitos y no puede ser 00000000.', 'advertencia')
+    if (carnet.length !== 8) {
+      mostrarNotificacion('El carnet debe tener exactamente 8 dígitos.', 'advertencia')
+      return
+    }
+
+    if (!carnet.startsWith('0')) {
+      mostrarNotificacion('El carnet debe comenzar con 0.', 'advertencia')
       return
     }
 
@@ -77,10 +81,15 @@ function Venta() {
   }
 
   const manejarCambioCarnet = (e) => {
-    let valor = e.target.value.replace('#', '')
-    if (!/^\d*$/.test(valor) || valor.length > 8) return
-    if (valor === '00000000') valor = '00000001'
-    setCarnet(valor ? `#${valor}` : '')
+    let valor = e.target.value
+    
+    // Solo permite números
+    if (!/^\d*$/.test(valor)) return
+    
+    // Máximo 8 dígitos
+    if (valor.length > 8) return
+    
+    setCarnet(valor)
   }
 
   return (
@@ -140,11 +149,14 @@ function Venta() {
             <h3>Carnet (Usuario)</h3>
             <input
               type="text"
-              placeholder="#12345678"
+              placeholder="00000000"
               value={carnet}
               onChange={manejarCambioCarnet}
+              maxLength="8"
             />
-            <p className="contador">Debe tener 8 dígitos, mínimo #00000001</p>
+            <p className="contador">
+              {carnet.length}/8 dígitos - Debe iniciar con 0
+            </p>
           </div>
 
           <div className="Juego-botones">

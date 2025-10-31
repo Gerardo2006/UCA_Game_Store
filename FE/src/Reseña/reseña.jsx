@@ -22,6 +22,7 @@ function Reseña() {
   const [reseña, setReseña] = useState('')
   const [carnet, setCarnet] = useState('')
   const [reseñasPorJuego, setReseñasPorJuego] = useState({})
+  const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
 
   const productos = [
     {
@@ -89,6 +90,11 @@ function Reseña() {
     }
   ]
 
+  const mostrarNotificacion = (mensaje, tipo) => {
+    setNotificacion({ mostrar: true, mensaje, tipo })
+    setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
+  }
+
   const manejarCambioCarnet = (e) => {
     const valor = e.target.value
     // Solo permite números
@@ -108,11 +114,6 @@ function Reseña() {
     }
   }
 
-  const validarCarnet = (carnet) => {
-    // Debe tener exactamente 8 dígitos y empezar con 0
-    return carnet.length === 8 && carnet.startsWith('0')
-  }
-
   const calcularPromedio = (reseñas) => {
     if (!reseñas || reseñas.length === 0) return 0
     const suma = reseñas.reduce((acc, r) => acc + r.calificacion, 0)
@@ -123,17 +124,27 @@ function Reseña() {
     e.preventDefault()
 
     if (!calificacion) {
-      alert('Por favor selecciona una calificación')
+      mostrarNotificacion('Por favor selecciona una calificación', 'advertencia')
       return
     }
 
-    if (!validarCarnet(carnet)) {
-      alert('El carnet debe tener exactamente 8 dígitos y comenzar con 0')
+    if (carnet.length === 0) {
+      mostrarNotificacion('Por favor ingresa tu carnet', 'advertencia')
+      return
+    }
+
+    if (carnet.length !== 8) {
+      mostrarNotificacion('El carnet debe tener exactamente 8 dígitos', 'error')
+      return
+    }
+
+    if (!carnet.startsWith('0')) {
+      mostrarNotificacion('El carnet debe comenzar con 0', 'error')
       return
     }
 
     if (!reseña.trim()) {
-      alert('Por favor escribe una reseña')
+      mostrarNotificacion('Por favor escribe una reseña', 'advertencia')
       return
     }
 
@@ -155,7 +166,7 @@ function Reseña() {
       ]
     }))
 
-    alert('¡Reseña enviada con éxito!')
+    mostrarNotificacion('¡Reseña enviada con éxito!', 'exito')
 
     // Limpiar solo el formulario
     setCalificacion(null)
@@ -186,6 +197,13 @@ function Reseña() {
           </nav>
         </div>
       </header>
+
+      {/* Toast de notificación */}
+      {notificacion.mostrar && (
+        <div className={`Reseña-toast toast-${notificacion.tipo}`}>
+          {notificacion.mensaje}
+        </div>
+      )}
 
       {/* Contenido principal */}
       <main className="reseña-contenido">
