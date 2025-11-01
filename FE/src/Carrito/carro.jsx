@@ -25,6 +25,12 @@ function Carro() {
     }
   }, [carrito])
 
+  // Función para truncar texto
+  const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (texto.length <= maxCaracteres) return texto
+    return texto.substring(0, maxCaracteres) + '...'
+  }
+
   // Función para eliminar un juego del carrito
   const eliminarDelCarrito = (id) => {
     const nuevoCarrito = carrito.filter(juego => juego.id !== id)
@@ -108,7 +114,7 @@ function Carro() {
                     />
                     <div className="carrito-item-info">
                       <h3>{juego.nombre}</h3>
-                      <p className="carrito-item-descripcion">{juego.descripcion}</p>
+                      <p className="carrito-item-descripcion">{truncarTexto(juego.descripcion, 100)}</p>
                       <p className="carrito-item-precio">${juego.precio.toFixed(2)}</p>
                     </div>
                     <button

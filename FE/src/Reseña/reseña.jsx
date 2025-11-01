@@ -31,6 +31,12 @@ function Reseña() {
     setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
   }
 
+  // Función para truncar texto
+  const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (texto.length <= maxCaracteres) return texto
+    return texto.substring(0, maxCaracteres) + '...'
+  }
+
   // Verificación para que solo permita números y un máximo de 8 dígitos
   const manejarCambioCarnet = (e) => {
     const valor = e.target.value
@@ -159,7 +165,7 @@ function Reseña() {
                   />
                   <div className="producto-info-reseña">
                     <h3>{producto.nombre}</h3>
-                    <p>{producto.descripcion}</p>
+                    <p>{truncarTexto(producto.descripcion, 100)}</p>
                   </div>
                 </div>
               ))}
