@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { PORT } from "./Keys/keys.js";
+import { db } from "./Data/connection.js";
 
 // Importaremos nuestras rutas
 // import apiRouter from "./router/router.js";
