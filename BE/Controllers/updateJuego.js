@@ -1,4 +1,4 @@
-import { db } from "../data/connection.js";
+import { db } from "../Data/connection.js";
 
 // Controlador para PUT
 export const updateJuego = async (req, res) => {
@@ -7,14 +7,13 @@ export const updateJuego = async (req, res) => {
 
     const { nombre, descripcion, precio, imagen } = req.body;
 
-
     const query = `
       UPDATE juegos 
       SET nombre = $1, descripcion = $2, precio = $3, imagen = $4 
       WHERE id = $5
       RETURNING *;
     `;
-    
+
     const values = [nombre, descripcion, precio, imagen, id];
 
     const result = await db.query(query, values);
@@ -33,10 +32,10 @@ export const updateJuego = async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({ 
-      success: false, 
-      message: "Error al actualizar el juego", 
-      error: error.message 
+    return res.status(500).json({
+      success: false,
+      message: "Error al actualizar el juego",
+      error: error.message
     });
   }
 };

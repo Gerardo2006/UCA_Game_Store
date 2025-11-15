@@ -1,4 +1,4 @@
-import { db } from "../data/connection.js";
+import { db } from "../Data/connection.js";
 
 // Controlador para GET juegos
 export const getJuegos = async (req, res) => {
