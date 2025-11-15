@@ -3,12 +3,12 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import { PORT } from "./Keys/keys.js";
 import { db } from "./Data/connection.js";
+import apiRouter from "./Router/router.js";
 
-// Importaremos nuestras rutas
-// import apiRouter from "./router/router.js";
-
+// Configuración básica
 const app = express();
 
+// Middlewares
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -17,13 +17,10 @@ app.use(
 );
 app.use(cors());
 
-// Ruta de bienvenida para probar que el servidor funciona
-app.get("/", (req, res) => {
-  res.status(200).json({ status: true, message: "¡Bienvenido al Backend de UCA Game Store!" });
-});
+// Rutas
+app.use('/api', apiRouter);
 
-
-// --- Iniciar Servidor ---
+// Iniciar Servidor
 app.listen(PORT, () =>
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
 );
