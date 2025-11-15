@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { PORT } from "./Keys/keys.js";
-import { db } from "./Data/connection.js";
+import { db } from "./data/connection.js";
 import apiRouter from "./Router/router.js";
 
 // Configuración básica
