@@ -1,38 +1,48 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import './buscar.css' 
+import './buscar.css'
 import '../Inicio/home.css'
 import logo from '../assets/logo.png'
-import { listaDeJuegos } from '../data/juegos'
 
 function Buscar() {
   const navigate = useNavigate()
-  
+
   const [terminoBusqueda, setTerminoBusqueda] = useState('')
   const [resultados, setResultados] = useState([])
+
+  const [listaMaestraJuegos, setListaMaestraJuegos] = useState([])
+
+  useEffect(() => {
+    const fetchJuegos = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/juegos')
+        const data = await response.json()
+        if (data.success) {
+          setListaMaestraJuegos(data.juegos)
+        }
+      } catch (err) {
+        console.error("Error al cargar juegos: ", err)
+      }
+    }
+    fetchJuegos()
+  }, [])
 
   useEffect(() => {
     if (terminoBusqueda.trim() === '') {
       setResultados([])
     } else {
       const busquedaLower = terminoBusqueda.toLowerCase()
-      
-      const juegosFiltrados = listaDeJuegos.filter(juego => 
+
+      const juegosFiltrados = listaMaestraJuegos.filter(juego =>
         juego.nombre.toLowerCase().includes(busquedaLower)
-      )      
+      )
+
       setResultados(juegosFiltrados)
     }
-  }, [terminoBusqueda])
+  }, [terminoBusqueda, listaMaestraJuegos])
 
-  // Función para navegar a la vista del juego
   const irAVista = producto => {
     navigate(`/juego/${producto.id}`, { state: producto })
-  }
-
- 
-  const truncarTexto = (texto, maxCaracteres = 100) => {
-    if (texto.length <= maxCaracteres) return texto
-    return texto.substring(0, maxCaracteres) + '...'
   }
 
   return (
@@ -55,7 +65,7 @@ function Buscar() {
       <div className="Buscar-content">
         <section className="buscador-container">
           <h2>Encuentra tu próximo juego</h2>
-          <input 
+          <input
             type="text"
             placeholder="Escribe el nombre del juego..."
             className="buscador-input"
@@ -63,9 +73,9 @@ function Buscar() {
             onChange={(e) => setTerminoBusqueda(e.target.value)}
           />
         </section>
-
+      </div>
+      <div className="Inicio-content" style={{ paddingTop: 0 }}>
         <section className="resultados-container">
-          {/* Se muestran los resultados solo si hay un término de búsqueda.*/}
           {terminoBusqueda.length > 0 && (
             <div className="lista-productos">
               {resultados.map(producto => (
@@ -82,8 +92,8 @@ function Buscar() {
                   />
                   <div className="producto-info">
                     <h3>{producto.nombre}</h3>
-                    <p>{truncarTexto(producto.descripcion, 100)}</p>
-                    <p className="producto-precio">${producto.precio.toFixed(2)}</p>
+                    <p>{producto.descripcion}</p>
+                    <p className="producto-precio">${Number(producto.precio).toFixed(2)}</p>
                   </div>
                 </div>
               ))}
@@ -99,7 +109,7 @@ function Buscar() {
       </div>
 
       <footer className="Inicio-footer">
-        <p>© 2025 UCA Game Store</p>
+        <p>©️ 2025 UCA Game Store</p>
       </footer>
     </main>
   )

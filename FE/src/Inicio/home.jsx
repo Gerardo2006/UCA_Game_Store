@@ -1,21 +1,50 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom' 
+import { useState, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import './home.css'
 import logo from '../assets/logo.png'
-import { listaDeJuegos } from '../data/juegos'
 
 function Home() {
   const navigate = useNavigate()
 
-  const [productos, setProductos] = useState(listaDeJuegos)
+  const [productos, setProductos] = useState([])
+
+  const [cargando, setCargando] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchJuegos = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/juegos')
+        if (!response.ok) {
+          throw new Error('No se pudo conectar a la API')
+        }
+        const data = await response.json()
+        
+        if (data.success) {
+          setProductos(data.juegos) 
+        } else {
+          throw new Error(data.message)
+        }
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setCargando(false) 
+      }
+    }
+
+    fetchJuegos() 
+  }, []) 
 
   const irAVista = producto => {
     navigate(`/juego/${producto.id}`, { state: producto })
   }
 
-  const truncarTexto = (texto, maxCaracteres = 100) => {
-    if (texto.length <= maxCaracteres) return texto
-    return texto.substring(0, maxCaracteres) + '...'
+  if (cargando) {
+    return <main className="Inicio-content"><h2 style={{color: 'white', textAlign: 'center'}}>Cargando juegos...</h2></main>
+  }
+
+  if (error) {
+    return <main className="Inicio-content"><h2 style={{color: 'red', textAlign: 'center'}}>Error: {error}</h2></main>
   }
 
   return (
@@ -53,8 +82,8 @@ function Home() {
                 />
                 <div className="producto-info">
                   <h3>{producto.nombre}</h3>
-                  <p>{truncarTexto(producto.descripcion, 100)}</p>
-                  <p className="producto-precio">${producto.precio.toFixed(2)}</p>
+                  <p>{producto.descripcion}</p>
+                  <p className="producto-precio">${Number(producto.precio).toFixed(2)}</p>
                 </div>
               </div>
             ))}
