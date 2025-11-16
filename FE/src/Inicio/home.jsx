@@ -39,6 +39,11 @@ function Home() {
     navigate(`/juego/${producto.id}`, { state: producto })
   }
 
+   const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (texto.length <= maxCaracteres) return texto
+    return texto.substring(0, maxCaracteres) + '...'
+  }
+
   if (cargando) {
     return <main className="Inicio-content"><h2 style={{color: 'white', textAlign: 'center'}}>Cargando juegos...</h2></main>
   }
@@ -82,7 +87,7 @@ function Home() {
                 />
                 <div className="producto-info">
                   <h3>{producto.nombre}</h3>
-                  <p>{producto.descripcion}</p>
+                 <p>{truncarTexto(producto.descripcion, 100)}</p>
                   <p className="producto-precio">${Number(producto.precio).toFixed(2)}</p>
                 </div>
               </div>

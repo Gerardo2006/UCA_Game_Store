@@ -17,41 +17,62 @@ function Venta() {
     setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
   }
 
-  const manejarPublicacion = () => {
-    const valorNumerico = parseFloat(precio.replace('$', '')) || 0
+  const manejarPublicacion = async () => { 
+    const valorNumerico = parseFloat(precio.replace('$', '')) || 0;
 
     if (!nombre || !descripcion || !precio || !carnet) {
-      mostrarNotificacion('Completa todos los campos antes de publicar.', 'advertencia')
-      return
+      mostrarNotificacion('Completa todos los campos antes de publicar.', 'advertencia');
+      return;
     }
-
     if (valorNumerico <= 0) {
-      mostrarNotificacion('El precio debe ser mayor que 0.', 'advertencia')
-      return
+      mostrarNotificacion('El precio debe ser mayor que 0.', 'advertencia');
+      return;
     }
-
     if (valorNumerico > 200) {
-      mostrarNotificacion('El precio máximo permitido es $200.00.', 'advertencia')
-      return
+      mostrarNotificacion('El precio máximo permitido es $200.00.', 'advertencia');
+      return;
     }
-
     if (carnet.length !== 8) {
-      mostrarNotificacion('El carnet debe tener exactamente 8 dígitos.', 'advertencia')
-      return
+      mostrarNotificacion('El carnet debe tener exactamente 8 dígitos.', 'advertencia');
+      return;
     }
-
     if (!carnet.startsWith('0')) {
-      mostrarNotificacion('El carnet debe comenzar con 0.', 'advertencia')
-      return
+      mostrarNotificacion('El carnet debe comenzar con 0.', 'advertencia');
+      return;
     }
+    
+    try {
+    
+      const datosSolicitud = {
+        nombre: nombre,
+        descripcion: descripcion,
+        precio: precio, 
+        carnet: carnet
+      };
 
-    mostrarNotificacion('Solicitud enviada con éxito', 'exito')
+      const response = await fetch('http://localhost:3000/api/juegos/solicitud', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datosSolicitud),
+      });
 
-    // Limpiar campos
-    setNombre('')
-    setDescripcion('')
-    setPrecio('')
-    setCarnet('')
+      const data = await response.json();
+
+      if (data.success) {
+        mostrarNotificacion('Solicitud enviada con éxito', 'exito');
+
+        setNombre('');
+        setDescripcion('');
+        setPrecio('');
+        setCarnet('');
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (err) {
+      mostrarNotificacion(`Error al enviar: ${err.message}`, 'error');
+    }
   }
 
   const manejarCambioPrecio = (e) => {
@@ -61,7 +82,7 @@ function Venta() {
     if (valor.startsWith('-')) return
 
     if (valor.includes('.')) {
-      const [entero, decimal] = valor.split('.')
+      const [entero, decimal] = valor.split('.') 
       if (decimal.length > 2) return
     }
 
