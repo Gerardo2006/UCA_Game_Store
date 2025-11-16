@@ -8,7 +8,6 @@ function Carro() {
   const [carrito, setCarrito] = useState([])
   const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
 
-  // Cargar el carrito desde localStorage al montar el componente
   useEffect(() => {
     const carritoGuardado = localStorage.getItem('carrito')
     if (carritoGuardado) {
@@ -16,7 +15,6 @@ function Carro() {
     }
   }, [])
 
-  // Guardar el carrito en localStorage cada vez que cambie
   useEffect(() => {
     if (carrito.length > 0) {
       localStorage.setItem('carrito', JSON.stringify(carrito))
@@ -25,13 +23,6 @@ function Carro() {
     }
   }, [carrito])
 
-  // Función para truncar texto
-  const truncarTexto = (texto, maxCaracteres = 100) => {
-    if (texto.length <= maxCaracteres) return texto
-    return texto.substring(0, maxCaracteres) + '...'
-  }
-
-  // Función para eliminar un juego del carrito
   const eliminarDelCarrito = (id) => {
     const nuevoCarrito = carrito.filter(juego => juego.id !== id)
     setCarrito(nuevoCarrito)
@@ -42,7 +33,8 @@ function Carro() {
 
   // Función para calcular el total
   const calcularTotal = () => {
-    return carrito.reduce((total, juego) => total + juego.precio, 0).toFixed(2)
+    const total = carrito.reduce((total, juego) => total + Number(juego.precio), 0)
+    return total.toFixed(2)
   }
 
   // Función para proceder al pago
@@ -114,8 +106,9 @@ function Carro() {
                     />
                     <div className="carrito-item-info">
                       <h3>{juego.nombre}</h3>
-                      <p className="carrito-item-descripcion">{truncarTexto(juego.descripcion, 100)}</p>
-                      <p className="carrito-item-precio">${juego.precio.toFixed(2)}</p>
+                      <p className="carrito-item-descripcion">{juego.descripcion}</p>
+                      <p className="carrito-item-precio">${Number(juego.precio).toFixed(2)}</p>
+
                     </div>
                     <button
                       onClick={() => eliminarDelCarrito(juego.id)}

@@ -1,8 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './reseña.css'
 import logo from '../assets/logo.png'
-import { listaDeJuegos } from '../data/juegos'
 
 // Estrella de calificación
 const StarIcon = ({ filled, size = 30 }) => (
@@ -25,19 +24,58 @@ function Reseña() {
   const [carnet, setCarnet] = useState('')
   const [reseñasPorJuego, setReseñasPorJuego] = useState({})
   const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
+  const [listaDeJuegos, setListaDeJuegos] = useState([])
+  const [cargandoJuegos, setCargandoJuegos] = useState(true)
+
+  useEffect(() => {
+    if (!juegoSeleccionado) {
+      setCargandoJuegos(true);
+      const fetchJuegos = async () => {
+        try {
+          const response = await fetch('http://localhost:3000/api/juegos')
+          const data = await response.json()
+          if (data.success) {
+            setListaDeJuegos(data.juegos)
+          }
+        } catch (err) {
+          console.error("Error al cargar juegos: ", err)
+        } finally {
+          setCargandoJuegos(false)
+        }
+      }
+      fetchJuegos()
+    }
+  }, [juegoSeleccionado])
+
+  useEffect(() => {
+    if (juegoSeleccionado && !reseñasPorJuego[juegoSeleccionado.id]) {
+      const fetchReseñas = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/api/resenas/${juegoSeleccionado.id}`)
+          const data = await response.json()
+          if (data.success) {
+            setReseñasPorJuego(prev => ({
+              ...prev,
+              [juegoSeleccionado.id]: data.reseñas || []
+            }))
+          }
+        } catch (err) {
+          console.error("Error al cargar reseñas: ", err)
+          setReseñasPorJuego(prev => ({
+            ...prev,
+            [juegoSeleccionado.id]: []
+          }))
+        }
+      }
+      fetchReseñas()
+    }
+  }, [juegoSeleccionado, reseñasPorJuego])
 
   const mostrarNotificacion = (mensaje, tipo) => {
     setNotificacion({ mostrar: true, mensaje, tipo })
     setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
   }
 
-  // Función para truncar texto
-  const truncarTexto = (texto, maxCaracteres = 100) => {
-    if (texto.length <= maxCaracteres) return texto
-    return texto.substring(0, maxCaracteres) + '...'
-  }
-
-  // Verificación para que solo permita números y un máximo de 8 dígitos
   const manejarCambioCarnet = (e) => {
     const valor = e.target.value
     if (valor === '' || /^\d+$/.test(valor)) {
@@ -60,7 +98,7 @@ function Reseña() {
     return (suma / reseñas.length).toFixed(1)
   }
 
-  const manejarEnvio = (e) => {
+  const manejarEnvio = async (e) => {
     e.preventDefault()
 
     if (!calificacion) {
@@ -84,30 +122,43 @@ function Reseña() {
       return
     }
 
-    // Crear nueva reseña
-    const nuevaReseña = {
-      id: Date.now(),
-      carnet,
-      calificacion,
-      texto: reseña,
-      fecha: new Date().toLocaleDateString()
+    try {
+      const nuevaReseña = {
+        juego_id: juegoSeleccionado.id,
+        calificacion: calificacion,
+        carnet: carnet,
+        texto: reseña
+      };
+
+      const response = await fetch('http://localhost:3000/api/resenas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(nuevaReseña),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        mostrarNotificacion('¡Reseña enviada con éxito!', 'exito')
+        setReseñasPorJuego(prev => ({
+          ...prev,
+          [juegoSeleccionado.id]: [
+            data.reseña,
+            ...(prev[juegoSeleccionado.id] || [])
+          ]
+        }))
+
+        setCalificacion(null)
+        setReseña('')
+        setCarnet('')
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (err) {
+      mostrarNotificacion(`Error al enviar: ${err.message}`, 'error')
     }
-
-    // Agregar la reseña al juego seleccionado
-    setReseñasPorJuego(prev => ({
-      ...prev,
-      [juegoSeleccionado.id]: [
-        ...(prev[juegoSeleccionado.id] || []),
-        nuevaReseña
-      ]
-    }))
-
-    mostrarNotificacion('¡Reseña enviada con éxito!', 'exito')
-
-    // Limpiar solo el formulario
-    setCalificacion(null)
-    setReseña('')
-    setCarnet('')
   }
 
   const reseñasActuales = juegoSeleccionado
@@ -116,10 +167,8 @@ function Reseña() {
 
   const promedioActual = calcularPromedio(reseñasActuales)
 
-
   return (
     <div className="contenedor-reseña">
-      {/* Header */}
       <header className="Inicio-header">
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
@@ -134,45 +183,45 @@ function Reseña() {
           </nav>
         </div>
       </header>
-
-      {/* Toast de notificación */}
       {notificacion.mostrar && (
         <div className={`Reseña-toast toast-${notificacion.tipo}`}>
           {notificacion.mensaje}
         </div>
       )}
 
-      {/* Contenido principal */}
       <main className="reseña-contenido">
         {!juegoSeleccionado ? (
-          // Vista de lista de juegos
           <section>
             <h2 className="titulo-seleccion">
               Selecciona un juego para reseñar
             </h2>
 
-            <div className="lista-productos-reseña">
-              {listaDeJuegos.map(producto => (
-                <div
-                  key={producto.id}
-                  onClick={() => setJuegoSeleccionado(producto)}
-                  className="producto-reseña"
-                >
-                  <img
-                    src={producto.imagen}
-                    alt={producto.nombre}
-                    className="producto-imagen-reseña"
-                  />
-                  <div className="producto-info-reseña">
-                    <h3>{producto.nombre}</h3>
-                    <p>{truncarTexto(producto.descripcion, 100)}</p>
+            {cargandoJuegos ? (
+              <h3 style={{ color: 'white', textAlign: 'center' }}>Cargando lista de juegos...</h3>
+            ) : (
+              <div className="lista-productos-reseña">
+                {listaDeJuegos.map(producto => (
+                  <div
+                    key={producto.id}
+                    onClick={() => setJuegoSeleccionado(producto)}
+                    className="producto-reseña"
+                  >
+                    <img
+                      src={producto.imagen}
+                      alt={producto.nombre}
+                      className="producto-imagen-reseña"
+                    />
+                    <div className="producto-info-reseña">
+                      <h3>{producto.nombre}</h3>
+                      <p>{producto.descripcion}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </section>
         ) : (
-          // Vista con formulario y reseñas
+          // Vista con formulario y reseñas (esta parte se queda igual)
           <>
             <div className="encabezado-seccion">
               <img
@@ -211,7 +260,6 @@ function Reseña() {
             </div>
 
             <div className="contenedor-formulario-reseñas">
-              {/* Formulario de reseña */}
               <section className="formulario-reseña-container">
                 <h3 className="formulario-titulo">Escribe tu reseña</h3>
 
@@ -260,59 +308,58 @@ function Reseña() {
                       placeholder="Escribe tu reseña aquí"
                     />
                     <span className={`contador-caracteres ${reseña.length === 500 ? 'limite-alcanzado' : ''}`}>
-                      {reseña.length}/500 caracteres
-                    </span>
-                  </div>
-
-                  <button
-                    onClick={manejarEnvio}
-                    className="boton-enviar-reseña"
-                  >
-                    Enviar Reseña
-                  </button>
+                    {reseña.length}/500 caracteres
+                  </span>
                 </div>
-              </section>
 
-              {/* Reseñas previas */}
-              <section className="reseñas-previas-container">
-                <h3 className="reseñas-titulo">Reseñas de usuarios</h3>
-
-                {reseñasActuales.length === 0 ? (
-                  <p className="sin-reseñas">
-                    Aún no hay reseñas para este juego. ¡Sé el primero en reseñar!
-                  </p>
-                ) : (
-                  <div className="lista-reseñas">
-                    {reseñasActuales.map(reseñaItem => (
-                      <div key={reseñaItem.id} className="reseña-item">
-                        <div className="reseña-header">
-                          <span className="reseña-carnet">Carnet: {reseñaItem.carnet}</span>
-                          <div className="reseña-calificacion">
-                            {[...Array(5)].map((_, i) => (
-                              <StarIcon
-                                key={i}
-                                filled={i < reseñaItem.calificacion}
-                                size={16}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="reseña-texto">{reseñaItem.texto}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
+                <button
+                  onClick={manejarEnvio}
+                  className="boton-enviar-reseña"
+                >
+                  Enviar Reseña
+                </button>
             </div>
-          </>
-        )}
-      </main>
+          </section>
 
-      {/* Footer */}
-      <footer className="Inicio-footer">
-        <p>© 2025 UCA Game Store</p>
-      </footer>
+        <section className="reseñas-previas-container">
+          <h3 className="reseñas-titulo">Reseñas de usuarios</h3>
+
+          {reseñasActuales.length === 0 ? (
+            <p className="sin-reseñas">
+              Aún no hay reseñas para este juego. ¡Sé el primero en reseñar!
+            </p>
+          ) : (
+            <div className="lista-reseñas">
+              {reseñasActuales.map(reseñaItem => (
+                <div key={reseñaItem.id} className="reseña-item">
+                  <div className="reseña-header">
+                    <span className="reseña-carnet">Carnet: {reseñaItem.carnet_usuario}</span>
+                    <div className="reseña-calificacion">
+                      {[...Array(5)].map((_, i) => (
+                        <StarIcon
+                          key={i}
+                          filled={i < reseñaItem.calificacion}
+                          size={16}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="reseña-texto">{reseñaItem.texto}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
     </div>
+          </>
+        )
+}
+      </main >
+
+  < footer className = "Inicio-footer" >
+    <p>© 2025 UCA Game Store</p>
+      </footer >
+    </div >
   )
 }
 

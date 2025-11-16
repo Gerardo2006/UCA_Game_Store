@@ -1,14 +1,38 @@
-import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useLocation, useNavigate, Link, useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import './juego.css'
 import logo from '../assets/logo.png'
 
 function Juego() {
-  const { state: producto } = useLocation()
+  const { state: productoDesdeHome } = useLocation()
   const navigate = useNavigate()
-  const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
+  const { id } = useParams()
 
-  if (!producto) return <p className="Juego-error">No se encontró el producto.</p>
+  const [producto, setProducto] = useState(productoDesdeHome)
+  const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
+  const [cargando, setCargando] = useState(true)
+
+  useEffect(() => {
+    if (!producto) {
+      console.log("No hay producto, buscando en la API...");
+      const fetchJuego = async () => {
+        try {
+          const response = await fetch(`http://localhost:3000/api/juegos/${id}`)
+          const data = await response.json()
+          if (data.success) {
+            setProducto(data.juego)
+          }
+        } catch (err) {
+          console.error("Error al cargar juego:", err)
+        } finally {
+          setCargando(false)
+        }
+      }
+      fetchJuego()
+    } else {
+      setCargando(false)
+    }
+  }, [id, producto])
 
   const agregarAlCarrito = () => {
     // Obtener el carrito actual de localStorage
@@ -29,6 +53,16 @@ function Juego() {
       setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
     }
   }
+
+  if (cargando) {
+    return <main className="Juego-error"><h2>Cargando...</h2></main>
+  }
+
+  if (!producto) {
+    return <main className="Juego-error"><h2>Error: No se encontró el producto.</h2></main>
+  }
+
+  const precioComoNumero = Number(producto.precio);
 
   return (
     <main className="Juego">
@@ -52,7 +86,7 @@ function Juego() {
         <h2>{producto.nombre}</h2>
         <img src={producto.imagen} alt={producto.nombre} />
         <p className="Juego-descripcion">{producto.descripcion}</p>
-        <p className="Juego-precio">${producto.precio.toFixed(2)}</p>
+        <p className="Juego-precio">${precioComoNumero.toFixed(2)}</p>
         <button onClick={agregarAlCarrito}>Agregar al carrito</button>
         <button className="Juego-volver" onClick={() => navigate('/')}>Volver al inicio</button>
       </section>
