@@ -504,3 +504,14 @@ nav a:hover {
     90% { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(-20px); }
 }
+
+/* Estilos de StarIcon */
+.star-icon {
+  cursor: pointer;
+  transition: fill 200ms;  
+  fill: #e4e5e9;
+}
+
+.star-icon-filled {
+  fill: #ffc107;
+}
