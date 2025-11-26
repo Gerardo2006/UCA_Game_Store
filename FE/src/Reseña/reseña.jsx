@@ -160,6 +160,11 @@ function Reseña() {
     }
   }
 
+  const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (texto.length <= maxCaracteres) return texto
+    return texto.substring(0, maxCaracteres) + '...'
+  }
+
   const reseñasActuales = juegoSeleccionado
     ? (reseñasPorJuego[juegoSeleccionado.id] || [])
     : []
@@ -212,7 +217,7 @@ function Reseña() {
                     />
                     <div className="producto-info-reseña">
                       <h3>{producto.nombre}</h3>
-                      <p>{producto.descripcion}</p>
+                      <p>{truncarTexto(producto.descripcion)}</p>
                     </div>
                   </div>
                 ))}

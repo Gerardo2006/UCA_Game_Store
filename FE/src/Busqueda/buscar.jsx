@@ -45,6 +45,11 @@ function Buscar() {
     navigate(`/juego/${producto.id}`, { state: producto })
   }
 
+  const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (texto.length <= maxCaracteres) return texto
+    return texto.substring(0, maxCaracteres) + '...'
+  }
+
   return (
     <main className="Buscar">
       <header className="Inicio-header">
@@ -92,7 +97,7 @@ function Buscar() {
                   />
                   <div className="producto-info">
                     <h3>{producto.nombre}</h3>
-                    <p>{producto.descripcion}</p>
+                    <p>{truncarTexto(producto.descripcion)}</p>
                     <p className="producto-precio">${Number(producto.precio).toFixed(2)}</p>
                   </div>
                 </div>
