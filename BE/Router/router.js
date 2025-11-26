@@ -7,6 +7,8 @@ import { crearReseña } from "../Controllers/crearReseña.js";
 import { getSolicitudesPendientes } from "../Controllers/getSolicitudes.js";
 import { aprobarSolicitud } from "../Controllers/aprobarSolicitud.js";
 import { rechazarSolicitud } from "../Controllers/rechazarSolicitud.js";
+import { deleteJuego } from "../Controllers/deleteJuego.js";
+import { deleteReseña } from "../Controllers/deleteReseña.js";
 
 // Creación del router
 const router = express.Router();
@@ -22,6 +24,8 @@ router.put("/juegos/:id", updateJuego);
 router.post("/juegos/solicitud", crearSolicitud);
 router.get("/resenas/:id", getReseñas);
 router.post("/resenas", crearReseña);
+router.delete("/resenas/:id", deleteReseña);
+router.delete("/juegos/:id", deleteJuego);
 router.get("/admin/solicitudes", getSolicitudesPendientes);
 router.post("/admin/aprobar", aprobarSolicitud);
 router.put("/admin/rechazar/:id", rechazarSolicitud);
