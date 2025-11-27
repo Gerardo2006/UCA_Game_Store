@@ -1,4 +1,6 @@
 import express from "express";
+import { verifyToken } from "../Middlewares/authMiddleware.js";
+import { signupClient, signinClient } from "../Controllers/clientAuthController.js";
 import { getJuegos, getJuegoById } from "../Controllers/getJuegos.js";
 import { updateJuego } from "../Controllers/updateJuego.js";
 import { crearSolicitud } from "../Controllers/crearSolicitud.js";
@@ -17,13 +19,19 @@ router.get("/", (req, res) => {
   res.status(200).json({ status: true, message: "API funcionando" });
 });
 
-// Rutas
+// Rutas de autenticación
+router.post("/auth/signup", signupClient);
+router.post("/auth/signin", signinClient);
+
+// Rutas para cliente
+router.post("/juegos/solicitud", verifyToken, crearSolicitud);
+router.post("/resenas", verifyToken, crearReseña);
+
+
 router.get("/juegos", getJuegos);
 router.get("/juegos/:id", getJuegoById);
 router.put("/juegos/:id", updateJuego);
-router.post("/juegos/solicitud", crearSolicitud);
 router.get("/resenas/:id", getReseñas);
-router.post("/resenas", crearReseña);
 router.delete("/resenas/:id", deleteReseña);
 router.delete("/juegos/:id", deleteJuego);
 router.get("/admin/solicitudes", getSolicitudesPendientes);

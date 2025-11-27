@@ -29,3 +29,10 @@ CREATE TABLE reseñas (
   texto VARCHAR(500),
   fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Tabla 4: Clientes
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    carnet VARCHAR(20) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);

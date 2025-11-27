@@ -18,7 +18,7 @@ app.use(
 app.use(cors());
 
 // Rutas
-app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // Iniciar Servidor
 app.listen(PORT, () =>
