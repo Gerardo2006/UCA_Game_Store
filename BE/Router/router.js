@@ -12,6 +12,7 @@ import { aprobarSolicitud } from "../Controllers/aprobarSolicitud.js";
 import { rechazarSolicitud } from "../Controllers/rechazarSolicitud.js";
 import { deleteJuego } from "../Controllers/deleteJuego.js";
 import { deleteReseña } from "../Controllers/deleteReseña.js";
+import { deleteCliente } from "../Controllers/deleteCliente.js";
 
 // Creación del router
 const router = express.Router();
@@ -45,6 +46,7 @@ router.post("/resenas", verifyToken, crearReseña);
 router.put("/juegos/:id", verifyToken, updateJuego);
 router.delete("/juegos/:id", verifyToken, deleteJuego);
 router.delete("/resenas/:id", verifyToken, deleteReseña);
+router.delete("/admin/clientes/:id", verifyToken, deleteCliente);
 
 // Rutas de gestión de solicitudes
 router.get("/admin/solicitudes", verifyToken, getSolicitudesPendientes);

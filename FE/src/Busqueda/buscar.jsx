@@ -63,7 +63,6 @@ function Buscar() {
             <Link to="/vender">Vender</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
-            <Link to="/perfil">Perfil</Link>
           </nav>
         </div>
       </header>
@@ -115,7 +114,7 @@ function Buscar() {
       </div>
 
       <footer className="Inicio-footer">
-        <p>©️ 2025 UCA Game Store</p>
+        <p>© 2025 UCA Game Store</p>
       </footer>
     </main>
   )
