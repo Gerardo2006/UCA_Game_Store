@@ -6,7 +6,7 @@ export const deleteUsuario = async (req, res) => {
     const { role } = req.user;
 
     if (role !== 'admin') {
-        return res.status(403).json({ message: "Acceso denegado." });
+        return res.status(403).json({ message: "Acceso denegado: Se requieren permisos de administrador." });
     }
 
     try {

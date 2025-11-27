@@ -2,6 +2,12 @@ import { db } from "../Data/connection.js";
 
 // Controlador para POST aprobar solicitud
 export const aprobarSolicitud = async (req, res) => {
+    const { role } = req.user;
+    
+    if (role !== 'admin') {
+        return res.status(403).json({ message: "Acceso denegado: Se requieren permisos de administrador." });
+    }
+
     const { solicitud_id, imagen_url } = req.body;
 
     if (!solicitud_id || !imagen_url) {

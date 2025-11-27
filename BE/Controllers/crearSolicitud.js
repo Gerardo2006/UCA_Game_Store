@@ -2,7 +2,12 @@ import { db } from '../Data/connection.js';
 
 // Controlador para POST solicitud venta
 export const crearSolicitud = async (req, res) => {
-    const { id: usuario_id } = req.user;
+    const { id: usuario_id, role } = req.user;
+
+    if (role !== 'usuario') {
+        return res.status(403).json({ message: "Los administradores no pueden crear solicitudes de venta." });
+    }
+
     const { nombre, descripcion, precio } = req.body;
 
     if (!nombre || !descripcion || !precio) {

@@ -3,7 +3,6 @@ import { db } from '../Data/connection.js';
 // Controlador para GET juegos
 export const getJuegos = async (req, res) => {
     try {
-        // CAMBIO: JOIN con 'usuarios' y columna 'usuario_id'
         const query = `
             SELECT 
                 j.id,
@@ -31,7 +30,7 @@ export const getJuegoById = async (req, res) => {
     const { id } = req.params;
     try {
         const query = `
-            SELECT j.*, c.carnet AS carnet_vendedor 
+            SELECT j.*, u.carnet AS carnet_vendedor 
             FROM juegos j
             JOIN usuarios u ON j.usuario_id = u.id
             WHERE j.id = $1

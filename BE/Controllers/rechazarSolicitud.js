@@ -3,6 +3,11 @@ import { db } from '../Data/connection.js';
 // Controlador para PUT rechazar solicitud
 export const rechazarSolicitud = async (req, res) => {
     const { id } = req.params;
+    const { role } = req.user;
+    
+    if (role !== 'admin') {
+        return res.status(403).json({ message: "Acceso denegado: Se requieren permisos de administrador." });
+    }
 
     try {
         const query = "UPDATE solicitudes_venta SET estado = 'rechazada' WHERE id = $1";

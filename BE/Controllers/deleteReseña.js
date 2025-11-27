@@ -2,6 +2,12 @@ import { db } from "../Data/connection.js";
 
 // Controlador para DELETE reseña
 export const deleteReseña = async (req, res) => {
+
+    const { role } = req.user;
+    if (role !== 'admin') {
+        return res.status(403).json({ message: "Acceso denegado: Se requieren permisos de administrador." });
+    }
+
     try {
         const id = parseInt(req.params.id);
 

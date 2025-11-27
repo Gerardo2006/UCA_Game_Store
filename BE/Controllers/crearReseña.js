@@ -1,9 +1,14 @@
-import { db } from "../Data/connection.js"; 
+import { db } from "../Data/connection.js";
 
 // Controlador para POST reseñas
 export const crearReseña = async (req, res) => {
   try {
-    const { id: usuario_id } = req.user;
+    const { id: usuario_id, role } = req.user;
+
+    if (role !== 'usuario') {
+      return res.status(403).json({ message: "Los administradores no pueden dejar reseñas." });
+    }
+
     const { juego_id, calificacion, comentario } = req.body;
 
     if (!juego_id || !calificacion || !comentario) {
@@ -15,7 +20,7 @@ export const crearReseña = async (req, res) => {
       VALUES ($1, $2, $3, $4) 
       RETURNING *
     `;
-    const values = [juego_id, calificacion, usuario_id, comentario]; 
+    const values = [juego_id, calificacion, usuario_id, comentario];
 
     const result = await db.query(query, values);
 
