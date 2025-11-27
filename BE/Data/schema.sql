@@ -32,7 +32,15 @@ CREATE TABLE reseñas (
 
 -- Tabla 4: Clientes
 CREATE TABLE clientes (
-    id SERIAL PRIMARY KEY,
-    carnet VARCHAR(20) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+  id SERIAL PRIMARY KEY,
+  carnet VARCHAR(20) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+
+-- Tabla 5: Administradores
+CREATE TABLE administradores (
+  id SERIAL PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL
 );

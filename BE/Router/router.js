@@ -1,6 +1,7 @@
 import express from "express";
 import { verifyToken } from "../Middlewares/authMiddleware.js";
 import { signupClient, signinClient } from "../Controllers/clientAuthController.js";
+import { signupAdmin, loginAdmin } from "../Controllers/adminAuthController.js";
 import { getJuegos, getJuegoById } from "../Controllers/getJuegos.js";
 import { updateJuego } from "../Controllers/updateJuego.js";
 import { crearSolicitud } from "../Controllers/crearSolicitud.js";
@@ -19,24 +20,35 @@ router.get("/", (req, res) => {
   res.status(200).json({ status: true, message: "API funcionando" });
 });
 
-// Rutas de autenticación
+// RUTAS PÚBLICAS
+
+// Rutas de autenticación clientes
 router.post("/auth/signup", signupClient);
 router.post("/auth/signin", signinClient);
 
-// Rutas para cliente
+// Rutas autenticación administradores
+router.post("/auth/admin/signup", signupAdmin);
+router.post("/auth/admin/login", loginAdmin);
+
+// Catálogo y vistas
+router.get("/juegos", getJuegos);          
+router.get("/juegos/:id", getJuegoById);   
+router.get("/resenas/:id", getReseñas);
+
+// RUTAS PROTEGIDAS
+
+// Rutas para acciones del cliente
 router.post("/juegos/solicitud", verifyToken, crearSolicitud);
 router.post("/resenas", verifyToken, crearReseña);
 
+// Rutas de acciones del administrador
+router.put("/juegos/:id", verifyToken, updateJuego);
+router.delete("/juegos/:id", verifyToken, deleteJuego);
+router.delete("/resenas/:id", verifyToken, deleteReseña);
 
-router.get("/juegos", getJuegos);
-router.get("/juegos/:id", getJuegoById);
-router.put("/juegos/:id", updateJuego);
-router.get("/resenas/:id", getReseñas);
-router.delete("/resenas/:id", deleteReseña);
-router.delete("/juegos/:id", deleteJuego);
-
-router.get("/admin/solicitudes", getSolicitudesPendientes);
-router.post("/admin/aprobar", aprobarSolicitud);
-router.put("/admin/rechazar/:id", rechazarSolicitud);
+// Rutas de gestión de solicitudes
+router.get("/admin/solicitudes", verifyToken, getSolicitudesPendientes);
+router.post("/admin/aprobar", verifyToken, aprobarSolicitud);
+router.put("/admin/rechazar/:id", verifyToken, rechazarSolicitud);
 
 export default router;
