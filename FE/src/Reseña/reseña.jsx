@@ -31,7 +31,7 @@ function Reseña() {
       setCargandoJuegos(true);
       const fetchJuegos = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/juegos')
+          const response = await fetch('http://localhost:3000/juegos')
           const data = await response.json()
           if (data.success) {
             setListaDeJuegos(data.juegos)
@@ -50,7 +50,7 @@ function Reseña() {
     if (juegoSeleccionado && !reseñasPorJuego[juegoSeleccionado.id]) {
       const fetchReseñas = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/resenas/${juegoSeleccionado.id}`)
+          const response = await fetch(`http://localhost:3000/resenas/${juegoSeleccionado.id}`)
           const data = await response.json()
           if (data.success) {
             setReseñasPorJuego(prev => ({
@@ -129,7 +129,7 @@ function Reseña() {
         texto: reseña
       };
 
-      const response = await fetch('http://localhost:3000/api/resenas', {
+      const response = await fetch('http://localhost:3000/resenas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

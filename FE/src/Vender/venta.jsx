@@ -50,7 +50,7 @@ function Venta() {
         carnet: carnet
       };
 
-      const response = await fetch('http://localhost:3000/api/juegos/solicitud', {
+      const response = await fetch('http://localhost:3000/juegos/solicitud', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

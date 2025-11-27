@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     const fetchJuegos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/juegos')
+        const response = await fetch('http://localhost:3000/juegos')
         if (!response.ok) {
           throw new Error('No se pudo conectar a la API')
         }
@@ -65,6 +65,7 @@ function Home() {
             <Link to="/vender">Vender</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
+            <Link to= "/login">Iniciar Sesión</Link>
           </nav>
         </div>
       </header>

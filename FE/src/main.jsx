@@ -7,6 +7,8 @@ import Carro from './Carrito/carro'
 import Reseña from './Reseña/reseña'
 import Venta from './Vender/venta'
 import Buscar from './Busqueda/buscar'
+import Login from './Login-Signin/login'
+import Signup from './Login-Signin/signup'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -14,6 +16,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/juego/:id" element={<Juego />} />
         <Route path="/carrito" element={<Carro />} />
         <Route path="/reseñas" element={<Reseña />} />

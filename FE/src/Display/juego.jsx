@@ -17,7 +17,7 @@ function Juego() {
       console.log("No hay producto, buscando en la API...");
       const fetchJuego = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/api/juegos/${id}`)
+          const response = await fetch(`http://localhost:3000/juegos/${id}`)
           const data = await response.json()
           if (data.success) {
             setProducto(data.juego)

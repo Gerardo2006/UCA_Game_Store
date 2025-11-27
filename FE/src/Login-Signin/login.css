@@ -1,0 +1,163 @@
+/* ==================================== */
+/* Estilos generales y del contenedor principal (Login) */
+/* ==================================== */
+
+/* Color principal para acentos (naranja) */
+:root {
+  --color-primary: #ff7f11;
+  /* Color secundario (cian) */
+  --color-secondary: #00bfa6;
+  /* Color de fondo oscuro */
+  --color-dark-bg: #0b0b0f;
+  /* Color para contenedores (gris oscuro) */
+  --color-container-bg: #1c1c24;
+  /* Color de texto claro */
+  --color-text-light: #ffffff;
+  /* Color de texto gris claro */
+  --color-text-muted: #d1d1d6;
+}
+
+/* Contenedor principal de la página de login (similar a #root en home.css) */
+.Login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--color-dark-bg); /* Fondo oscuro general */
+    font-family: 'Helvetica Neue', sans-serif;
+    color: var(--color-text-light);
+    padding-top: 100px; /* Espacio para el header fijo */
+}
+
+/* ==================================== */
+/* Estilos del encabezado (Login-header) */
+/* Reutilizando la estética de Inicio-header de home.css */
+/* ==================================== */
+.Login-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    /* Degradado idéntico al de home.css */
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: var(--color-text-light);
+    /* Borde redondeado solo abajo, como en home.css, si estuviera fijo */
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 2px 6px rgba(255, 127, 17, 0.4);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.Login-logo {
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.Login-logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 28px; /* Tamaño similar al de home.css */
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================================== */
+/* Contenedor del formulario (login-container) */
+/* ==================================== */
+.login-container {
+    background-color: var(--color-container-bg); /* Fondo oscuro del contenedor */
+    padding: 40px;
+    border-radius: 12px; /* Mayor redondeado, similar a tarjetas de producto */
+    box-shadow: 0 4px 12px rgba(255, 127, 17, 0.2); /* Sombra con acento naranja */
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    border: 1px solid #2a2a35; /* Borde sutil, como en los productos */
+}
+
+.login-container h2 {
+    margin-bottom: 25px;
+    color: var(--color-primary); /* Título en color naranja principal */
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+/* ==================================== */
+/* Formulario y elementos (login-form) */
+/* ==================================== */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: left;
+}
+
+.login-form label {
+    font-weight: 500;
+    color: var(--color-text-muted); /* Color de texto suave */
+    margin-bottom: 2px; /* Reducir espacio para un look más compacto */
+    display: block;
+}
+
+.login-form input[type="carnet"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #2a2a35; /* Borde oscuro para el tema */
+    border-radius: 8px; /* Bordes redondeados */
+    font-size: 1rem;
+    color: var(--color-text-light); /* Texto de input claro */
+    background-color: #0b0b0f; /* Fondo de input muy oscuro */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-form input[type="carnet"]:focus,
+.login-form input[type="password"]:focus {
+    border-color: var(--color-secondary); /* Borde cian al enfocar */
+    box-shadow: 0 0 0 2px rgba(0, 191, 166, 0.5); /* Sombra de resplandor cian */
+    outline: none;
+}
+
+/* Estilos para el botón de enviar (similar a los botones de juego.css) */
+.login-form button[type="submite"] {
+    background-color: var(--color-primary); /* Color de fondo naranja */
+    color: var(--color-text-light);
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 2px 4px rgba(255, 127, 17, 0.4);
+}
+
+.login-form button[type="submite"]:hover {
+    background-color: #ff994d; /* Tono más claro al pasar el ratón */
+    transform: translateY(-2px);
+}
+
+/* Estilos para el mensaje de error (similar a Juego-error de juego.css) */
+.login-form .error {
+    color: var(--color-primary); /* Color naranja para el mensaje de error */
+    font-size: 0.95rem;
+    margin-top: 10px;
+    background-color: #2a2a35; /* Fondo oscuro sutil para el error */
+    border: 1px solid #ff7f11;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}

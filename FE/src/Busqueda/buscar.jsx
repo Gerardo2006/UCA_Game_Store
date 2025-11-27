@@ -15,7 +15,7 @@ function Buscar() {
   useEffect(() => {
     const fetchJuegos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/juegos')
+        const response = await fetch('http://localhost:3000/juegos')
         const data = await response.json()
         if (data.success) {
           setListaMaestraJuegos(data.juegos)
@@ -63,6 +63,7 @@ function Buscar() {
             <Link to="/vender">Vender</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
+            <Link to="/perfil">Perfil</Link>
           </nav>
         </div>
       </header>
