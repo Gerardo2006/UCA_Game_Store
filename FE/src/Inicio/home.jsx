@@ -6,12 +6,28 @@ import logo from '../assets/logo.png'
 function Home() {
   const navigate = useNavigate()
 
-  const [productos, setProductos] = useState([])
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false) 
+  const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
 
+
+  const handleLogout = () => {
+    localStorage.removeItem('token') 
+    localStorage.removeItem('user') 
+    setIsLoggedIn(false)
+    navigate('/login')
+  }
+
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+
     const fetchJuegos = async () => {
       try {
         const response = await fetch('http://localhost:3000/juegos')
@@ -39,7 +55,7 @@ function Home() {
     navigate(`/juego/${producto.id}`, { state: producto })
   }
 
-   const truncarTexto = (texto, maxCaracteres = 100) => {
+  const truncarTexto = (texto, maxCaracteres = 100) => {
     if (texto.length <= maxCaracteres) return texto
     return texto.substring(0, maxCaracteres) + '...'
   }
@@ -58,6 +74,7 @@ function Home() {
         <div className="Inicio-logo">
           <img src={logo} alt="Logo UCA Games Store" />
         </div>
+
         <div className="header-content">
           <h1>UCA Games Store</h1>
           <nav>
@@ -65,8 +82,19 @@ function Home() {
             <Link to="/vender">Vender</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
-            <Link to= "/login">Iniciar Sesión</Link>
+            {!isLoggedIn && <Link to="/login">Iniciar Sesión</Link>}
           </nav>
+        </div>
+        
+        <div className="header-actions">
+            {isLoggedIn && (
+                <button 
+                    onClick={handleLogout} 
+                    className="logout-button" 
+                >
+                    Cerrar Sesión
+                </button>
+            )}
         </div>
       </header>
 
