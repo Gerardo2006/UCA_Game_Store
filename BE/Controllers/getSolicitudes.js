@@ -1,23 +1,28 @@
-import { db } from "../Data/connection.js";
+import { db } from '../Data/connection.js';
 
 // Controlador para GET solicitudes de venta pendiente
 export const getSolicitudesPendientes = async (req, res) => {
     try {
-        const query = "SELECT * FROM solicitudes_venta WHERE estado = 'pendiente' ORDER BY fecha_solicitud ASC";
+        const query = `
+            SELECT 
+                s.id, 
+                s.nombre, 
+                s.descripcion, 
+                s.precio, 
+                s.estado,
+                s.fecha_solicitud,
+                c.carnet,
+                (c.carnet || '@uca.edu.sv') AS contacto_generado
+            FROM solicitudes s
+            JOIN clientes c ON s.cliente_id = c.id
+            WHERE s.estado = 'pendiente'
+        `;
 
-        const results = await db.query(query);
-
-        return res.status(200).json({
-            success: true,
-            solicitudes: results.rows,
-            total: results.rowCount
-        });
+        const result = await db.query(query);
+        res.status(200).json(result.rows);
 
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Error al obtener solicitudes",
-            error: error.message
-        });
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener solicitudes" });
     }
 };

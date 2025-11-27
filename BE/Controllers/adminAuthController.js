@@ -9,7 +9,7 @@ export const signupAdmin = async (req, res) => {
 
     try {
         if (!nombre || !email || !password) {
-            return res.status(400).json({ message: "Faltan datos (nombre, email, password)" });
+            return res.status(400).json({ message: "Faltan datos" });
         }
 
         const check = await db.query('SELECT * FROM administradores WHERE email = $1', [email]);
@@ -24,11 +24,11 @@ export const signupAdmin = async (req, res) => {
             [nombre, email, hash]
         );
 
-        res.status(201).json({ message: "Administrador registrado con éxito", admin: result.rows[0] });
+        res.status(201).json({ message: "Admin registrado", admin: result.rows[0] });
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Error en el servidor" });
+        res.status(500).json({ message: "Error interno" });
     }
 };
 
@@ -40,11 +40,10 @@ export const loginAdmin = async (req, res) => {
         const result = await db.query('SELECT * FROM administradores WHERE email = $1', [email]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ message: "Administrador no encontrado" });
+            return res.status(404).json({ message: "Admin no encontrado" });
         }
 
         const admin = result.rows[0];
-
         const isValid = await compareHash(password, admin.password);
 
         if (!isValid) {
@@ -54,7 +53,7 @@ export const loginAdmin = async (req, res) => {
         const token = jwt.sign(
             { id: admin.id, email: admin.email, role: 'admin' },
             JWT_SECRET,
-            { expiresIn: '2h' }
+            { expiresIn: '1h' }
         );
 
         res.status(200).json({

@@ -1,39 +1,25 @@
-import { db } from "../Data/connection.js";
+import { db } from '../Data/connection.js';
 
-// Controlador para POST
+// Controlador para POST solicitud venta
 export const crearSolicitud = async (req, res) => {
+    const { id: usuario_id } = req.user;
+    const { nombre, descripcion, precio } = req.body;
+
+    if (!nombre || !descripcion || !precio) {
+        return res.status(400).json({ message: "Todos los campos son obligatorios" });
+    }
+
     try {
-        const { nombre, descripcion, precio, carnet } = req.body;
-
-        if (!nombre || !precio || !carnet) {
-            return res.status(400).json({
-                success: false,
-                message: "Nombre, precio y carnet son obligatorios."
-            });
-        }
-
-        const precioNumerico = parseFloat(precio.replace('$', '')) || 0;
-
         const query = `
-            INSERT INTO solicitudes_venta (nombre, descripcion, precio, carnet_vendedor) 
-            VALUES ($1, $2, $3, $4) 
-            RETURNING *
+            INSERT INTO solicitudes_venta (nombre, descripcion, precio, usuario_id, estado) 
+            VALUES ($1, $2, $3, $4, 'pendiente')
         `;
-        const values = [nombre, descripcion, precioNumerico, carnet];
 
-        const result = await db.query(query, values);
+        await db.query(query, [nombre, descripcion, precio, usuario_id]);
 
-        return res.status(201).json({
-            success: true,
-            message: "Solicitud de venta enviada con éxito.",
-            solicitud: result.rows[0]
-        });
-
+        res.status(201).json({ message: "Solicitud enviada exitosamente" });
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Error al enviar la solicitud de venta",
-            error: error.message
-        });
+        console.error(error);
+        res.status(500).json({ message: "Error al crear solicitud" });
     }
 };

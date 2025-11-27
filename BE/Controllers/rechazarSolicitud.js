@@ -1,37 +1,21 @@
-import { db } from "../Data/connection.js";
+import { db } from '../Data/connection.js';
 
 // Controlador para PUT rechazar solicitud
 export const rechazarSolicitud = async (req, res) => {
-    try {
-        const id = parseInt(req.params.id);
+    const { id } = req.params;
 
-        const query = `
-      UPDATE solicitudes_venta 
-      SET estado = 'rechazado' 
-      WHERE id = $1 AND estado = 'pendiente'
-      RETURNING *;
-    `;
+    try {
+        const query = "UPDATE solicitudes_venta SET estado = 'rechazada' WHERE id = $1";
 
         const result = await db.query(query, [id]);
 
         if (result.rowCount === 0) {
-            return res.status(404).json({
-                success: false,
-                message: `No se encontró ninguna solicitud pendiente con ID: ${id}`
-            });
+            return res.status(404).json({ message: "Solicitud no encontrada" });
         }
 
-        return res.status(200).json({
-            success: true,
-            message: `Solicitud con ID: ${id} marcada como 'rechazada'.`,
-            solicitud: result.rows[0]
-        });
-
+        res.status(200).json({ message: "Solicitud rechazada." });
     } catch (error) {
-        return res.status(500).json({
-            success: false,
-            message: "Error al rechazar la solicitud",
-            error: error.message
-        });
+        console.error(error);
+        res.status(500).json({ message: "Error al rechazar solicitud" });
     }
 };

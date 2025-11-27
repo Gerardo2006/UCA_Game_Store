@@ -1,6 +1,6 @@
 import express from "express";
 import { verifyToken } from "../Middlewares/authMiddleware.js";
-import { signupClient, signinClient } from "../Controllers/clientAuthController.js";
+import { signupUser, signinUser } from "../Controllers/userAuthController.js";
 import { signupAdmin, loginAdmin } from "../Controllers/adminAuthController.js";
 import { getJuegos, getJuegoById } from "../Controllers/getJuegos.js";
 import { updateJuego } from "../Controllers/updateJuego.js";
@@ -12,7 +12,7 @@ import { aprobarSolicitud } from "../Controllers/aprobarSolicitud.js";
 import { rechazarSolicitud } from "../Controllers/rechazarSolicitud.js";
 import { deleteJuego } from "../Controllers/deleteJuego.js";
 import { deleteReseña } from "../Controllers/deleteReseña.js";
-import { deleteCliente } from "../Controllers/deleteCliente.js";
+import { deleteUsuario } from "../Controllers/deleteUsuario.js";
 
 // Creación del router
 const router = express.Router();
@@ -24,8 +24,8 @@ router.get("/", (req, res) => {
 // RUTAS PÚBLICAS
 
 // Rutas de autenticación clientes
-router.post("/auth/signup", signupClient);
-router.post("/auth/signin", signinClient);
+router.post("/auth/signup", signupUser);
+router.post("/auth/signin", signinUser);
 
 // Rutas autenticación administradores
 router.post("/auth/admin/signup", signupAdmin);
@@ -46,7 +46,7 @@ router.post("/resenas", verifyToken, crearReseña);
 router.put("/juegos/:id", verifyToken, updateJuego);
 router.delete("/juegos/:id", verifyToken, deleteJuego);
 router.delete("/resenas/:id", verifyToken, deleteReseña);
-router.delete("/admin/clientes/:id", verifyToken, deleteCliente);
+router.delete("/admin/clientes/:id", verifyToken, deleteUsuario);
 
 // Rutas de gestión de solicitudes
 router.get("/admin/solicitudes", verifyToken, getSolicitudesPendientes);
