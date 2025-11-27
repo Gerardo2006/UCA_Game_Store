@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import api from '../utils/api.js'
 import './reseña.css'
 import logo from '../assets/logo.png'
 
@@ -31,8 +32,8 @@ function Reseña() {
       setCargandoJuegos(true);
       const fetchJuegos = async () => {
         try {
-          const response = await fetch('http://localhost:3000/juegos')
-          const data = await response.json()
+          const response = await api.get('/juegos')
+          const data = response.data
           if (data.success) {
             setListaDeJuegos(data.juegos)
           }
@@ -50,8 +51,8 @@ function Reseña() {
     if (juegoSeleccionado && !reseñasPorJuego[juegoSeleccionado.id]) {
       const fetchReseñas = async () => {
         try {
-          const response = await fetch(`http://localhost:3000/resenas/${juegoSeleccionado.id}`)
-          const data = await response.json()
+          const response = await api.get(`/resenas/${juegoSeleccionado.id}`)
+          const data = response.data
           if (data.success) {
             setReseñasPorJuego(prev => ({
               ...prev,
@@ -100,6 +101,12 @@ function Reseña() {
   const manejarEnvio = async (e) => {
     e.preventDefault()
 
+    const token = localStorage.getItem('token');
+    if (!token) {
+      mostrarNotificacion('Debes iniciar sesión para publicar una reseña.', 'advertencia');
+      return;
+    }
+
     if (!calificacion) {
       mostrarNotificacion('Por favor selecciona una calificación', 'advertencia')
       return
@@ -129,15 +136,8 @@ function Reseña() {
         texto: reseña
       };
 
-      const response = await fetch('http://localhost:3000/resenas', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nuevaReseña),
-      });
-
-      const data = await response.json();
+      const response = await api.post('/resenas', nuevaReseña);
+      const data = response.data;
 
       if (data.success) {
         mostrarNotificacion('¡Reseña enviada con éxito!', 'exito')
@@ -156,7 +156,17 @@ function Reseña() {
         throw new Error(data.message)
       }
     } catch (err) {
-      mostrarNotificacion(`Error al enviar: ${err.message}`, 'error')
+      let mensajeError = 'Error de conexión con el servidor.';
+      if (err.response) {
+        if (err.response.status === 401 || err.response.status === 403) {
+          mensajeError = 'No autorizado. Por favor, inicia sesión para publicar la reseña.';
+        } else {
+          mensajeError = err.response.data.message || `Error del servidor: ${err.response.status}`;
+        }
+      } else if (err.message) {
+        mensajeError = err.message;
+      }
+      mostrarNotificacion(`Error al enviar: ${mensajeError}`, 'error')
     }
   }
 
@@ -175,10 +185,10 @@ function Reseña() {
     <div className="contenedor-reseña">
       <header className="Inicio-header">
         <div className="Inicio-logo">
-          <img src={logo} alt="Logo UCA Games Store" />
+          <img src={logo} alt="Logo UCA Game Store" />
         </div>
         <div className="header-content">
-          <h1>UCA Games Store</h1>
+          <h1>UCA Game Store</h1>
           <nav>
             <Link to="/">Inicio</Link>
             <Link to="/buscar">Buscar</Link>
@@ -312,56 +322,56 @@ function Reseña() {
                       placeholder="Escribe tu reseña aquí"
                     />
                     <span className={`contador-caracteres ${reseña.length === 500 ? 'limite-alcanzado' : ''}`}>
-                    {reseña.length}/500 caracteres
-                  </span>
-                </div>
-
-                <button
-                  onClick={manejarEnvio}
-                  className="boton-enviar-reseña"
-                >
-                  Enviar Reseña
-                </button>
-            </div>
-          </section>
-
-        <section className="reseñas-previas-container">
-          <h3 className="reseñas-titulo">Reseñas de usuarios</h3>
-
-          {reseñasActuales.length === 0 ? (
-            <p className="sin-reseñas">
-              Aún no hay reseñas para este juego. ¡Sé el primero en reseñar!
-            </p>
-          ) : (
-            <div className="lista-reseñas">
-              {reseñasActuales.map(reseñaItem => (
-                <div key={reseñaItem.id} className="reseña-item">
-                  <div className="reseña-header">
-                    <span className="reseña-carnet">Carnet: {reseñaItem.carnet_usuario}</span>
-                    <div className="reseña-calificacion">
-                      {[...Array(5)].map((_, i) => (
-                        <StarIcon
-                          key={i}
-                          filled={i < reseñaItem.calificacion}
-                          size={16}
-                        />
-                      ))}
-                    </div>
+                      {reseña.length}/500 caracteres
+                    </span>
                   </div>
-                  <p className="reseña-texto">{reseñaItem.texto}</p>
+
+                  <button
+                    onClick={manejarEnvio}
+                    className="boton-enviar-reseña"
+                  >
+                    Enviar Reseña
+                  </button>
                 </div>
-              ))}
+              </section>
+
+              <section className="reseñas-previas-container">
+                <h3 className="reseñas-titulo">Reseñas de usuarios</h3>
+
+                {reseñasActuales.length === 0 ? (
+                  <p className="sin-reseñas">
+                    Aún no hay reseñas para este juego. ¡Sé el primero en reseñar!
+                  </p>
+                ) : (
+                  <div className="lista-reseñas">
+                    {reseñasActuales.map(reseñaItem => (
+                      <div key={reseñaItem.id} className="reseña-item">
+                        <div className="reseña-header">
+                          <span className="reseña-carnet">Carnet: {reseñaItem.carnet_usuario}</span>
+                          <div className="reseña-calificacion">
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon
+                                key={i}
+                                filled={i < reseñaItem.calificacion}
+                                size={16}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <p className="reseña-texto">{reseñaItem.texto}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </section>
             </div>
-          )}
-        </section>
-    </div>
           </>
         )
-}
+        }
       </main >
 
-  < footer className = "Inicio-footer" >
-    <p>© 2025 UCA Game Store</p>
+      < footer className="Inicio-footer" >
+        <p>© 2025 UCA Game Store</p>
       </footer >
     </div >
   )

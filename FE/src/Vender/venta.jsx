@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import api from '../utils/api.js'
 import './venta.css'
 import logo from '../assets/logo.png'
 
@@ -50,15 +51,9 @@ function Venta() {
         carnet: carnet
       };
 
-      const response = await fetch('http://localhost:3000/juegos/solicitud', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(datosSolicitud),
-      });
+      const response = await api.post('/juegos/solicitud', datosSolicitud);
 
-      const data = await response.json();
+      const data = await response.data;
 
       if (data.success) {
         mostrarNotificacion('Solicitud enviada con éxito', 'exito');
@@ -117,10 +112,10 @@ function Venta() {
     <main className="Venta">
       <header className="Inicio-header">
         <div className="Inicio-logo">
-          <img src={logo} alt="Logo UCA Games Store" />
+          <img src={logo} alt="Logo UCA Game Store" />
         </div>
         <div className="header-content">
-          <h1>UCA Games Store</h1>
+          <h1>UCA Game Store</h1>
           <nav>
             <Link to="/">Inicio</Link>
             <Link to="/buscar">Buscar</Link>

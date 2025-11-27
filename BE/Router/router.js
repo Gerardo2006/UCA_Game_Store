@@ -34,6 +34,7 @@ router.put("/juegos/:id", updateJuego);
 router.get("/resenas/:id", getReseñas);
 router.delete("/resenas/:id", deleteReseña);
 router.delete("/juegos/:id", deleteJuego);
+
 router.get("/admin/solicitudes", getSolicitudesPendientes);
 router.post("/admin/aprobar", aprobarSolicitud);
 router.put("/admin/rechazar/:id", rechazarSolicitud);

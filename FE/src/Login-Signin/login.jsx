@@ -5,7 +5,6 @@ import logo from '../assets/logo.png'
 import api from '../utils/api'
 
 function Login() {
-    // Definición del estado para capturar los valores de los inputs
     const [carnet, setCarnet] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
@@ -31,10 +30,10 @@ function Login() {
         <main className="Login">
             <header className="Login-header">
                 <div className="Login-logo">
-                    <img src={logo} alt="Logo UCA Games Store" />
+                    <img src={logo} alt="Logo UCA Game Store" />
                 </div>
                 <div className="header-content">
-                    <h1>UCA Games Store</h1>
+                    <h1>UCA Game Store</h1>
                     <nav>
                         <Link to="/">Inicio</Link>
                         <Link to="/signup">Crear una cuenta</Link>

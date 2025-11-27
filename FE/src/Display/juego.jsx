@@ -71,7 +71,7 @@ function Juego() {
           <img src={logo} alt="Logo UCA Games Store" />
         </div>
         <div className="header-content">
-          <h1>UCA Games Store</h1>
+          <h1>UCA Game Store</h1>
           <nav>
             <Link to="/">Inicio</Link>
             <Link to="/buscar">Buscar</Link>

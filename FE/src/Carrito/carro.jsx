@@ -66,10 +66,10 @@ function Carro() {
     <main className="Carro">
       <header className="Inicio-header">
         <div className="Inicio-logo">
-          <img src={logo} alt="Logo UCA Games Store" />
+          <img src={logo} alt="Logo UCA Game Store" />
         </div>
         <div className="header-content">
-          <h1>UCA Games Store</h1>
+          <h1>UCA Game Store</h1>
           <nav>
             <Link to="/">Inicio</Link>
             <Link to="/buscar">Buscar</Link>

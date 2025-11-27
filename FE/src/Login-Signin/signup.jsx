@@ -44,10 +44,10 @@ function Signup() {
         <main className="Signup">
             <header className="Signup-header">
                 <div className="Signup-logo">
-                    <img src={logo} alt="Logo UCA Games Store" />
+                    <img src={logo} alt="Logo UCA Game Store" />
                 </div>
                 <div className="header-content">
-                    <h1>UCA Games Store</h1>
+                    <h1>UCA Game Store</h1>
                     <nav>
                         <Link to="/login">Volver</Link>
                     </nav>
