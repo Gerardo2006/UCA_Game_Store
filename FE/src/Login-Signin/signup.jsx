@@ -22,6 +22,16 @@ function Signup() {
             return;
         }
 
+        if (carnet.length !== 8) {
+            setError('El carnet debe tener exactamente 8 dígitos.');
+            return;
+        }
+
+        if (!carnet.startsWith('0')) {
+            setError('El carnet debe comenzar con 0.');
+            return;
+        }
+
         try {
             const response = await api.post('/auth/signup', {
                 carnet,
@@ -36,7 +46,16 @@ function Signup() {
 
         } catch (err) {
             console.error('Signup error:', err);
-            setError(err.response?.data?.message || "Ocurrió un error en el registro. Inténtalo de nuevo.");
+            const msg = err.response?.data?.message || "Ocurrió un error en el registro. Inténtalo de nuevo.";
+            setError(msg);
+        }
+    };
+
+    // Función para permitir solo números en el input
+    const handleCarnetChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value) && value.length <= 8) {
+            setCarnet(value);
         }
     };
 
@@ -63,11 +82,14 @@ function Signup() {
                     <input
                         type="text"
                         id="carnet"
-                        placeholder="Carnet"
+                        placeholder="00000000"
                         value={carnet}
-                        onChange={(e) => setCarnet(e.target.value)}
+                        onChange={handleCarnetChange}
                         required
                     />
+                    <p style={{ fontSize: '0.8rem', color: '#ccc', marginTop: '5px' }}>
+                        Debe tener 8 dígitos y comenzar con 0.
+                    </p>
 
                     <label htmlFor="password">Contraseña:</label>
                     <input
@@ -80,6 +102,7 @@ function Signup() {
                     />
 
                     <button type="submit">Registrarse</button>
+
                     {error && <p className="error-message">{error}</p>}
                     {success && <p className="success-message">{success}</p>}
                 </form>

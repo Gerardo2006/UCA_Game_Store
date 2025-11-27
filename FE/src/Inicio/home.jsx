@@ -2,20 +2,19 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './home.css'
 import logo from '../assets/logo.png'
+import api from '../utils/api.js'
 
 function Home() {
   const navigate = useNavigate()
 
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false) 
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [productos, setProductos] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
 
-
   const handleLogout = () => {
-    localStorage.removeItem('token') 
-    localStorage.removeItem('user') 
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setIsLoggedIn(false)
     navigate('/login')
   }
@@ -30,42 +29,44 @@ function Home() {
 
     const fetchJuegos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/juegos')
-        if (!response.ok) {
-          throw new Error('No se pudo conectar a la API')
-        }
-        const data = await response.json()
-        
-        if (data.success) {
-          setProductos(data.juegos) 
+        const response = await api.get('/juegos')
+
+        const data = response.data;
+
+        if (Array.isArray(data)) {
+          setProductos(data);
         } else {
-          throw new Error(data.message)
+          console.error("Respuesta inesperada:", data);
+          setProductos([]);
         }
+
       } catch (err) {
-        setError(err.message)
+        console.error(err);
+        setError("No se pudieron cargar los juegos.")
       } finally {
-        setCargando(false) 
+        setCargando(false)
       }
     }
 
-    fetchJuegos() 
-  }, []) 
+    fetchJuegos()
+  }, [])
 
   const irAVista = producto => {
     navigate(`/juego/${producto.id}`, { state: producto })
   }
 
   const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (!texto) return "";
     if (texto.length <= maxCaracteres) return texto
     return texto.substring(0, maxCaracteres) + '...'
   }
 
   if (cargando) {
-    return <main className="Inicio-content"><h2 style={{color: 'white', textAlign: 'center'}}>Cargando juegos...</h2></main>
+    return <main className="Inicio-content"><h2 style={{ color: 'white', textAlign: 'center' }}>Cargando juegos...</h2></main>
   }
 
   if (error) {
-    return <main className="Inicio-content"><h2 style={{color: 'red', textAlign: 'center'}}>Error: {error}</h2></main>
+    return <main className="Inicio-content"><h2 style={{ color: 'red', textAlign: 'center' }}>Error: {error}</h2></main>
   }
 
   return (
@@ -82,19 +83,19 @@ function Home() {
             <Link to="/vender">Vender</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
-            {!isLoggedIn && <Link to="/login">Iniciar Sesión</Link>}
+            {!isLoggedIn && <Link to="/Login">Iniciar Sesión</Link>}
           </nav>
         </div>
-        
+
         <div className="header-actions">
-            {isLoggedIn && (
-                <button 
-                    onClick={handleLogout} 
-                    className="logout-button" 
-                >
-                    Cerrar Sesión
-                </button>
-            )}
+          {isLoggedIn && (
+            <button
+              onClick={handleLogout}
+              className="logout-button"
+            >
+              Cerrar Sesión
+            </button>
+          )}
         </div>
       </header>
 
@@ -102,25 +103,29 @@ function Home() {
         <section className="productos">
           <h2>Productos en venta</h2>
           <div className="lista-productos">
-            {productos.map(producto => (
-              <div
-                key={producto.id}
-                className="producto"
-                onClick={() => irAVista(producto)}
-                style={{ cursor: 'pointer' }}
-              >
-                <img
-                  src={producto.imagen}
-                  alt={producto.nombre}
-                  className="producto-imagen"
-                />
-                <div className="producto-info">
-                  <h3>{producto.nombre}</h3>
-                 <p>{truncarTexto(producto.descripcion, 100)}</p>
-                  <p className="producto-precio">${Number(producto.precio).toFixed(2)}</p>
+            {productos.length > 0 ? (
+              productos.map(producto => (
+                <div
+                  key={producto.id}
+                  className="producto"
+                  onClick={() => irAVista(producto)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <img
+                    src={producto.imagen || logo}
+                    alt={producto.nombre}
+                    className="producto-imagen"
+                  />
+                  <div className="producto-info">
+                    <h3>{producto.nombre}</h3>
+                    <p>{truncarTexto(producto.descripcion, 100)}</p>
+                    <p className="producto-precio">${Number(producto.precio).toFixed(2)}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p style={{ color: 'white' }}>No hay productos disponibles.</p>
+            )}
           </div>
         </section>
       </div>

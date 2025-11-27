@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import api from '../utils/api.js'
 import './buscar.css'
 import '../Inicio/home.css'
 import logo from '../assets/logo.png'
@@ -9,16 +10,21 @@ function Buscar() {
 
   const [terminoBusqueda, setTerminoBusqueda] = useState('')
   const [resultados, setResultados] = useState([])
-
   const [listaMaestraJuegos, setListaMaestraJuegos] = useState([])
 
+  // Cargar todos los juegos al inicio
   useEffect(() => {
     const fetchJuegos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/juegos')
-        const data = await response.json()
-        if (data.success) {
-          setListaMaestraJuegos(data.juegos)
+        const response = await api.get('/juegos')
+
+        const data = response.data;
+
+        if (Array.isArray(data)) {
+          setListaMaestraJuegos(data);
+        } else {
+          console.error("Formato inesperado al buscar juegos", data);
+          setListaMaestraJuegos([]);
         }
       } catch (err) {
         console.error("Error al cargar juegos: ", err)
@@ -27,6 +33,7 @@ function Buscar() {
     fetchJuegos()
   }, [])
 
+  // Filtrar juegos cuando el usuario escribe
   useEffect(() => {
     if (terminoBusqueda.trim() === '') {
       setResultados([])
@@ -34,7 +41,7 @@ function Buscar() {
       const busquedaLower = terminoBusqueda.toLowerCase()
 
       const juegosFiltrados = listaMaestraJuegos.filter(juego =>
-        juego.nombre.toLowerCase().includes(busquedaLower)
+        (juego.nombre || "").toLowerCase().includes(busquedaLower)
       )
 
       setResultados(juegosFiltrados)
@@ -46,6 +53,7 @@ function Buscar() {
   }
 
   const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (!texto) return "";
     if (texto.length <= maxCaracteres) return texto
     return texto.substring(0, maxCaracteres) + '...'
   }
@@ -60,6 +68,7 @@ function Buscar() {
           <h1>UCA Game Store</h1>
           <nav>
             <Link to="/">Inicio</Link>
+            <Link to="/buscar">Buscar</Link>
             <Link to="/vender">Vender</Link>
             <Link to="/carrito">Carrito</Link>
             <Link to="/reseñas">Reseñas</Link>
@@ -79,6 +88,7 @@ function Buscar() {
           />
         </section>
       </div>
+
       <div className="Inicio-content" style={{ paddingTop: 0 }}>
         <section className="resultados-container">
           {terminoBusqueda.length > 0 && (
@@ -91,7 +101,7 @@ function Buscar() {
                   style={{ cursor: 'pointer' }}
                 >
                   <img
-                    src={producto.imagen}
+                    src={producto.imagen || logo}
                     alt={producto.nombre}
                     className="producto-imagen"
                   />

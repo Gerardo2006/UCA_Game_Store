@@ -10,7 +10,6 @@ function Venta() {
   const [nombre, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [precio, setPrecio] = useState('')
-  const [carnet, setCarnet] = useState('')
   const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
 
   const mostrarNotificacion = (mensaje, tipo) => {
@@ -18,10 +17,10 @@ function Venta() {
     setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
   }
 
-  const manejarPublicacion = async () => { 
+  const manejarPublicacion = async () => {
     const valorNumerico = parseFloat(precio.replace('$', '')) || 0;
 
-    if (!nombre || !descripcion || !precio || !carnet) {
+    if (!nombre || !descripcion || !precio) {
       mostrarNotificacion('Completa todos los campos antes de publicar.', 'advertencia');
       return;
     }
@@ -33,40 +32,27 @@ function Venta() {
       mostrarNotificacion('El precio máximo permitido es $200.00.', 'advertencia');
       return;
     }
-    if (carnet.length !== 8) {
-      mostrarNotificacion('El carnet debe tener exactamente 8 dígitos.', 'advertencia');
-      return;
-    }
-    if (!carnet.startsWith('0')) {
-      mostrarNotificacion('El carnet debe comenzar con 0.', 'advertencia');
-      return;
-    }
-    
+
     try {
-    
       const datosSolicitud = {
         nombre: nombre,
         descripcion: descripcion,
-        precio: precio, 
-        carnet: carnet
+        precio: valorNumerico
       };
 
       const response = await api.post('/juegos/solicitud', datosSolicitud);
+      const data = response.data;
 
-      const data = await response.data;
+      mostrarNotificacion('Solicitud enviada con éxito', 'exito');
 
-      if (data.success) {
-        mostrarNotificacion('Solicitud enviada con éxito', 'exito');
+      setNombre('');
+      setDescripcion('');
+      setPrecio('');
 
-        setNombre('');
-        setDescripcion('');
-        setPrecio('');
-        setCarnet('');
-      } else {
-        throw new Error(data.message);
-      }
     } catch (err) {
-      mostrarNotificacion(`Error al enviar: ${err.message}`, 'error');
+      const mensajeError = err.response?.data?.message || err.message;
+      mostrarNotificacion(`Error al enviar: ${mensajeError}`, 'error');
+
     }
   }
 
@@ -77,7 +63,7 @@ function Venta() {
     if (valor.startsWith('-')) return
 
     if (valor.includes('.')) {
-      const [entero, decimal] = valor.split('.') 
+      const [entero, decimal] = valor.split('.')
       if (decimal.length > 2) return
     }
 
@@ -94,18 +80,6 @@ function Venta() {
 
   const manejarCambioDescripcion = (e) => {
     if (e.target.value.length <= 500) setDescripcion(e.target.value)
-  }
-
-  const manejarCambioCarnet = (e) => {
-    let valor = e.target.value
-    
-    // Solo permite números
-    if (!/^\d*$/.test(valor)) return
-    
-    // Máximo 8 dígitos
-    if (valor.length > 8) return
-    
-    setCarnet(valor)
   }
 
   return (
@@ -158,21 +132,7 @@ function Venta() {
               value={precio}
               onChange={manejarCambioPrecio}
             />
-            <p className="contador">Máximo: $200.00, hasta 5 dígitos</p>
-          </div>
-
-          <div className="Juego-cuadro">
-            <h3>Carnet (Usuario)</h3>
-            <input
-              type="text"
-              placeholder="00000000"
-              value={carnet}
-              onChange={manejarCambioCarnet}
-              maxLength="8"
-            />
-            <p className="contador">
-              {carnet.length}/8 dígitos - Debe iniciar con 0
-            </p>
+            <p className="contador">Máximo: $200.00</p>
           </div>
 
           <div className="Juego-botones">
@@ -182,7 +142,7 @@ function Venta() {
         </div>
 
         {notificacion.mostrar && (
-          <div className={`Juego-toast ${notificacion.tipo === 'advertencia' ? 'toast-advertencia' : 'toast-exito'}`}>
+          <div className={`Juego-toast ${notificacion.tipo === 'advertencia' || notificacion.tipo === 'error' ? 'toast-advertencia' : 'toast-exito'}`}>
             {notificacion.mensaje}
           </div>
         )}

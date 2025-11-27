@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import api from '../utils/api.js'
 import './reseña.css'
 import logo from '../assets/logo.png'
@@ -17,16 +17,18 @@ const StarIcon = ({ filled, size = 30 }) => (
 )
 
 function Reseña() {
+  const navigate = useNavigate()
+
   const [juegoSeleccionado, setJuegoSeleccionado] = useState(null)
   const [calificacion, setCalificacion] = useState(null)
   const [hover, setHover] = useState(null)
   const [reseña, setReseña] = useState('')
-  const [carnet, setCarnet] = useState('')
   const [reseñasPorJuego, setReseñasPorJuego] = useState({})
   const [notificacion, setNotificacion] = useState({ mostrar: false, mensaje: '', tipo: '' })
   const [listaDeJuegos, setListaDeJuegos] = useState([])
   const [cargandoJuegos, setCargandoJuegos] = useState(true)
 
+  // Cargar Lista de Juegos (Catálogo)
   useEffect(() => {
     if (!juegoSeleccionado) {
       setCargandoJuegos(true);
@@ -34,8 +36,9 @@ function Reseña() {
         try {
           const response = await api.get('/juegos')
           const data = response.data
-          if (data.success) {
-            setListaDeJuegos(data.juegos)
+
+          if (Array.isArray(data)) {
+            setListaDeJuegos(data)
           }
         } catch (err) {
           console.error("Error al cargar juegos: ", err)
@@ -47,16 +50,18 @@ function Reseña() {
     }
   }, [juegoSeleccionado])
 
+  // Cargar Reseñas del Juego Seleccionado
   useEffect(() => {
     if (juegoSeleccionado && !reseñasPorJuego[juegoSeleccionado.id]) {
       const fetchReseñas = async () => {
         try {
           const response = await api.get(`/resenas/${juegoSeleccionado.id}`)
           const data = response.data
-          if (data.success) {
+
+          if (Array.isArray(data)) {
             setReseñasPorJuego(prev => ({
               ...prev,
-              [juegoSeleccionado.id]: data.reseñas || []
+              [juegoSeleccionado.id]: data
             }))
           }
         } catch (err) {
@@ -74,15 +79,6 @@ function Reseña() {
   const mostrarNotificacion = (mensaje, tipo) => {
     setNotificacion({ mostrar: true, mensaje, tipo })
     setTimeout(() => setNotificacion({ mostrar: false, mensaje: '', tipo: '' }), 3000)
-  }
-
-  const manejarCambioCarnet = (e) => {
-    const valor = e.target.value
-    if (valor === '' || /^\d+$/.test(valor)) {
-      if (valor.length <= 8) {
-        setCarnet(valor)
-      }
-    }
   }
 
   const manejarCambioReseña = (e) => {
@@ -111,18 +107,7 @@ function Reseña() {
       mostrarNotificacion('Por favor selecciona una calificación', 'advertencia')
       return
     }
-    if (carnet.length === 0) {
-      mostrarNotificacion('Por favor ingresa tu carnet', 'advertencia')
-      return
-    }
-    if (carnet.length !== 8) {
-      mostrarNotificacion('El carnet debe tener exactamente 8 dígitos', 'error')
-      return
-    }
-    if (!carnet.startsWith('0')) {
-      mostrarNotificacion('El carnet debe comenzar con 0', 'error')
-      return
-    }
+
     if (!reseña.trim()) {
       mostrarNotificacion('Por favor escribe una reseña', 'advertencia')
       return
@@ -132,45 +117,31 @@ function Reseña() {
       const nuevaReseña = {
         juego_id: juegoSeleccionado.id,
         calificacion: calificacion,
-        carnet: carnet,
-        texto: reseña
+        comentario: reseña
       };
 
       const response = await api.post('/resenas', nuevaReseña);
       const data = response.data;
 
-      if (data.success) {
-        mostrarNotificacion('¡Reseña enviada con éxito!', 'exito')
-        setReseñasPorJuego(prev => ({
-          ...prev,
-          [juegoSeleccionado.id]: [
-            data.reseña,
-            ...(prev[juegoSeleccionado.id] || [])
-          ]
-        }))
+      if (response.status === 200 || response.status === 201) {
+        mostrarNotificacion('Reseña enviada con éxito', 'exito')
 
         setCalificacion(null)
         setReseña('')
-        setCarnet('')
-      } else {
-        throw new Error(data.message)
       }
     } catch (err) {
       let mensajeError = 'Error de conexión con el servidor.';
+
       if (err.response) {
-        if (err.response.status === 401 || err.response.status === 403) {
-          mensajeError = 'No autorizado. Por favor, inicia sesión para publicar la reseña.';
-        } else {
-          mensajeError = err.response.data.message || `Error del servidor: ${err.response.status}`;
-        }
-      } else if (err.message) {
-        mensajeError = err.message;
+        mensajeError = err.response.data.message || `Error: ${err.response.status}`;
       }
-      mostrarNotificacion(`Error al enviar: ${mensajeError}`, 'error')
+
+      mostrarNotificacion(mensajeError, 'error')
     }
   }
 
   const truncarTexto = (texto, maxCaracteres = 100) => {
+    if (!texto) return "";
     if (texto.length <= maxCaracteres) return texto
     return texto.substring(0, maxCaracteres) + '...'
   }
@@ -221,7 +192,7 @@ function Reseña() {
                     className="producto-reseña"
                   >
                     <img
-                      src={producto.imagen}
+                      src={producto.imagen || logo}
                       alt={producto.nombre}
                       className="producto-imagen-reseña"
                     />
@@ -235,11 +206,10 @@ function Reseña() {
             )}
           </section>
         ) : (
-          // Vista con formulario y reseñas (esta parte se queda igual)
           <>
             <div className="encabezado-seccion">
               <img
-                src={juegoSeleccionado.imagen}
+                src={juegoSeleccionado.imagen || logo}
                 alt={juegoSeleccionado.nombre}
                 className="imagen-juego-header"
               />
@@ -299,21 +269,6 @@ function Reseña() {
                   </div>
 
                   <div className="grupo-formulario">
-                    <label htmlFor="carnet">Carnet (8 dígitos, debe iniciar con 0):</label>
-                    <input
-                      type="text"
-                      id="carnet"
-                      value={carnet}
-                      onChange={manejarCambioCarnet}
-                      placeholder="00000000"
-                      maxLength="8"
-                    />
-                    <span className="contador-caracteres">
-                      {carnet.length}/8 dígitos
-                    </span>
-                  </div>
-
-                  <div className="grupo-formulario">
                     <label htmlFor="reseña">Tu Reseña:</label>
                     <textarea
                       id="reseña"
@@ -344,10 +299,13 @@ function Reseña() {
                   </p>
                 ) : (
                   <div className="lista-reseñas">
-                    {reseñasActuales.map(reseñaItem => (
-                      <div key={reseñaItem.id} className="reseña-item">
+                    {reseñasActuales.map((reseñaItem, index) => (
+                      // Usamos index como key fallback por si la reseña nueva no tiene ID aun
+                      <div key={reseñaItem.id || index} className="reseña-item">
                         <div className="reseña-header">
-                          <span className="reseña-carnet">Carnet: {reseñaItem.carnet_usuario}</span>
+                          <span className="reseña-carnet">
+                            Usuario: {reseñaItem.usuario_carnet || "Anónimo"}
+                          </span>
                           <div className="reseña-calificacion">
                             {[...Array(5)].map((_, i) => (
                               <StarIcon
@@ -358,7 +316,7 @@ function Reseña() {
                             ))}
                           </div>
                         </div>
-                        <p className="reseña-texto">{reseñaItem.texto}</p>
+                        <p className="reseña-texto">{reseñaItem.comentario}</p>
                       </div>
                     ))}
                   </div>
@@ -366,8 +324,7 @@ function Reseña() {
               </section>
             </div>
           </>
-        )
-        }
+        )}
       </main >
 
       < footer className="Inicio-footer" >
